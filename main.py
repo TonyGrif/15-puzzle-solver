@@ -13,6 +13,14 @@ def main():
     )
 
     parser.add_argument(
+        "matrix_string",
+        type=str,
+        default="1 _ 2 4 5 7 3 8 9 6 11 12 13 10 14 15",
+        nargs="?",
+        help="The starting state of the program.",
+    )
+
+    parser.add_argument(
         "-v",
         "--verbose",
         action="store_const",
@@ -31,8 +39,10 @@ def main():
     )
 
     args = parser.parse_args()
-
     logging.basicConfig(level=args.logging_level)
+
+    matrix_list = args.matrix_string.split(" ")
+    logging.debug("%s: %s", type(matrix_list), matrix_list)
 
 
 if __name__ == "__main__":
