@@ -5,6 +5,8 @@
 import argparse
 import logging
 
+from src.board import Board
+
 
 def main():
     """Main driver of the 15-Puzzle Solver script."""
