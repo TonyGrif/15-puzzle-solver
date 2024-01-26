@@ -51,6 +51,11 @@ def main():
         len(matrix_list) == 16
     ), "Invalid number of characters provided (expect 1-15 & '_' character)."
 
+    for num in range(1, 16):
+        assert (
+            str(num) in matrix_list
+        ), "Invalid number input (expect 1-15 & '_' character)."
+
 
 if __name__ == "__main__":
     main()
