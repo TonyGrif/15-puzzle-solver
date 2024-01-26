@@ -19,7 +19,7 @@ def main():
         type=str,
         default="1 _ 2 4 5 7 3 8 9 6 11 12 13 10 14 15",
         nargs="?",
-        help="The starting state of the program.",
+        help="The starting state of the program able to create a 4x4 matrix.",
     )
 
     parser.add_argument(
@@ -44,7 +44,12 @@ def main():
     logging.basicConfig(level=args.logging_level)
 
     matrix_list = args.matrix_string.split(" ")
+    matrix_list = [char for char in matrix_list if char]
     logging.debug("%s: %s", type(matrix_list), matrix_list)
+
+    assert (
+        len(matrix_list) == 16
+    ), "Invalid number of characters provided (expect 1-15 & '_' character)."
 
 
 if __name__ == "__main__":
