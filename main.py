@@ -6,6 +6,7 @@ import argparse
 import logging
 
 from src.board import Board
+from src.utils import convert_string_to_list, validate_list
 
 
 def main():
@@ -43,18 +44,12 @@ def main():
     args = parser.parse_args()
     logging.basicConfig(level=args.logging_level)
 
-    matrix_list = args.matrix_string.split(" ")
-    matrix_list = [char for char in matrix_list if char]
-    logging.debug("%s: %s", type(matrix_list), matrix_list)
+    matrix_list = convert_string_to_list(args.matrix_string)
 
-    assert (
-        len(matrix_list) == 16
-    ), "Invalid number of characters provided (expect 1-15 & '_' character)."
-
-    for num in range(1, 16):
-        assert (
-            str(num) in matrix_list
-        ), "Invalid number input (expect 1-15 & '_' character)."
+    try:
+        validate_list(matrix_list)
+    except AssertionError as ae:
+        print(ae)
 
 
 if __name__ == "__main__":
