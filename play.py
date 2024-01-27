@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-"""Main module for the 15-Puzzle Solver."""
+"""Main module for the 15-Puzzle Game
+
+This module allows the user to play the 15-puzzle game with
+the given starting input.
+"""
 
 import argparse
 import logging
@@ -10,9 +14,9 @@ from src.utils import convert_string_to_list, validate_list
 
 
 def main():
-    """Main driver of the 15-Puzzle Solver script."""
+    """Main driver of the 15-Puzzle game script."""
     parser = argparse.ArgumentParser(
-        description="Solve a 15-Puzzle through multiple AI methods."
+        description="Play a 15-Puzzle game."
     )
 
     parser.add_argument(
@@ -50,6 +54,8 @@ def main():
         validate_list(matrix_list)
     except AssertionError as ae:
         print(ae)
+
+    game_board = Board(matrix_list)
 
 
 if __name__ == "__main__":
