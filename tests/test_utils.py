@@ -12,7 +12,7 @@ def input_list():
 def test_conversion(input_list):
     assert type(input_list) is list
 
-    assert convert_string_to_list("   3 4   ") == [3, 4]
+    assert convert_string_to_list("   3 4   ") == ["3", "4"]
 
 
 def test_validate_list(input_list):
@@ -22,11 +22,11 @@ def test_validate_list(input_list):
         validate_list(["1", "2", "3"])
 
     wrong_num_list = list(input_list)
-    wrong_num_list[15] = 17
+    wrong_num_list[15] = "17"
     with pytest.raises(Exception) as e:
         validate_list(wrong_num_list)
 
     no_blank_list = list(input_list)
-    no_blank_list[1] = 18
+    no_blank_list[1] = "18"
     with pytest.raises(Exception) as e:
         validate_list(no_blank_list)
