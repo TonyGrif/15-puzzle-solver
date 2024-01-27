@@ -11,7 +11,8 @@ class Board:
     the actions that can be performed on the board.
 
     Variables:
-        starting_state (np.ndarry): The starting point for this game.
+        starting_state (np.ndarray): The starting point for this game.
+        goal_state (np.ndarray): The end goal to reach for this game.
     """
 
     def __init__(self, matrix_list: List) -> None:
@@ -23,9 +24,6 @@ class Board:
             space represented by 0 and will not be validated within
             this class.
         """
-        # Convert list to 4x4 matrix
-        # Save beginning state
-        # Add to a state tracker
         logging.debug("Row 1: %s", matrix_list[0:4])
         logging.debug("Row 2: %s", matrix_list[4:8])
         logging.debug("Row 3: %s", matrix_list[8:12])
@@ -37,3 +35,16 @@ class Board:
         )
 
         self.starting_state = init_array
+        self.goal_state = np.array(
+            [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]]
+        )
+
+    def move(self) -> None:
+        """Move and swap the elements in a valid way.
+
+        Parameters:
+            TBW
+        Returns:
+            TBW
+        """
+        pass

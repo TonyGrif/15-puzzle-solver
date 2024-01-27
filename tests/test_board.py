@@ -20,3 +20,8 @@ class TestBoard:
     def test_board_init(self, board):
         assert board.starting_state is not None
         assert np.shape(board.starting_state) == (4, 4)
+
+        assert np.shape(board.goal_state) == (4, 4)
+
+    def test_move(self, board):
+        pass
