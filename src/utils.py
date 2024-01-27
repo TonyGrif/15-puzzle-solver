@@ -14,15 +14,8 @@ def convert_string_to_list(matrix_string: str) -> List:
     Returns:
         A list containing the string data.
     """
-    # TODO: Clean this up a little
     matrix_list = matrix_string.split(" ")
     matrix_list = [char for char in matrix_list if char]
-
-    for indx, item in enumerate(matrix_list):
-        if item == "_":
-            matrix_list[indx] = 0
-        else:
-            matrix_list[indx] = int(item)
 
     logging.debug("%s: %s", type(matrix_list), matrix_list)
     return matrix_list
@@ -48,8 +41,11 @@ def validate_list(matrix_list: List) -> bool:
             "Invalid number of characters provided (expect 1-15 & '_' character)."
         )
 
-    for num in range(0, 16):
-        if num not in matrix_list:
+    for num in range(1, 16):
+        if str(num) not in matrix_list:
             raise AssertionError("Invalid number input (expect 1-15 & '_' character).")
+
+    if "_" not in matrix_list:
+        raise AssertionError("No blank provided (expect 1-15 & '_' character).")
 
     return True
