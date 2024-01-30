@@ -23,5 +23,18 @@ class TestBoard:
 
         assert np.shape(board.goal_state) == (4, 4)
 
+        np.testing.assert_array_equal(board.starting_state, board.current_state)
+
     def test_move(self, board):
         pass
+
+    def test_get_valid_moves(self, board):
+        assert board.get_valid_moves() == ("Up", "Left", "Right")
+
+        all_list = convert_string_to_list("1 2 4 5 7 3 _ 8 9 6 11 12 13 10 14 15")
+        all_board = Board(all_list)
+        assert all_board.get_valid_moves() == ("Up", "Down", "Left", "Right")
+
+        mlist = convert_string_to_list("1 2 4 5 7 3 8 9 6 11 12 13 10 14 15 _")
+        corner_board = Board(mlist)
+        assert corner_board.get_valid_moves() == ("Down", "Left")
