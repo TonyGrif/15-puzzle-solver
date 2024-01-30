@@ -1,7 +1,8 @@
 """This module contains the Board class structure"""
 
 import logging
-from typing import List
+from copy import deepcopy
+from typing import List, Tuple
 
 import numpy as np
 
@@ -12,6 +13,7 @@ class Board:
 
     Variables:
         starting_state (np.ndarray): The starting point for this game.
+        current_state (np.ndarray): The current state of this game.
         goal_state (np.ndarray): The end goal to reach for this game.
     """
 
@@ -35,6 +37,7 @@ class Board:
         )
 
         self.starting_state = init_array
+        self.current_state = deepcopy(init_array)
         self.goal_state = np.array(
             [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]]
         )
@@ -48,3 +51,33 @@ class Board:
             TBW
         """
         pass
+
+    def get_valid_moves(self) -> Tuple[str]:
+        """Return the valid moves given the current state.
+
+        Returns:
+            A tuple containing the valid moves. This will contain two or more
+            directions the board can shift in the form of strings.
+        """
+        row, col = self._get_blank_spot()
+        moves = []
+
+        if row != 3:
+            moves.append("Up")
+        if row != 0:
+            moves.append("Down")
+
+        if col != 0:
+            moves.append("Left")
+        if col != 3:
+            moves.append("Right")
+
+        return tuple(moves)
+
+    def _get_blank_spot(self) -> Tuple[int]:
+        """Get the location of the blank space.
+
+        Returns:
+            Two-dimensional tuple containing the indices of the blank.
+        """
+        return np.where(self.current_state == "_")
