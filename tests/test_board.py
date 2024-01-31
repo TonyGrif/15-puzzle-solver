@@ -26,7 +26,28 @@ class TestBoard:
         np.testing.assert_array_equal(board.starting_state, board.current_state)
 
     def test_move(self, board):
-        pass
+        assert board.move("Down") is False
+
+        assert board.move("Left") is True
+        np.testing.assert_raises(
+            AssertionError,
+            np.testing.assert_array_equal,
+            board.starting_state,
+            board.current_state,
+        )
+        assert board.current_state.tolist()[0] == ["_", "1", "2", "4"]
+        assert board.get_valid_moves() == ("Up", "Right")
+
+        board._reset_to_init() # Go back to starting array
+        assert board.move("Up") is True
+        np.testing.assert_raises(
+            AssertionError,
+            np.testing.assert_array_equal,
+            board.starting_state,
+            board.current_state,
+        )
+        assert board.current_state.tolist()[0] == ["1", "7", "2", "4"]
+        assert board.current_state.tolist()[1] == ["5", "_", "3", "8"]
 
     def test_get_valid_moves(self, board):
         assert board.get_valid_moves() == ("Up", "Left", "Right")
