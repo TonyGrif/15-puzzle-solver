@@ -59,3 +59,17 @@ class TestBoard:
         mlist = convert_string_to_list("1 2 4 5 7 3 8 9 6 11 12 13 10 14 15 _")
         corner_board = Board(mlist)
         assert corner_board.get_valid_moves() == ("Down", "Left")
+
+    def test_is_goal_state(self, board):
+        assert not board.is_goal_state()
+
+        board.move("Right")
+        board.move("Down")
+        board.move("Up")
+        board.move("Left")
+        board.move("Up")
+        board.move("Up")
+        board.move("Right")
+        board.move("Right")
+
+        assert board.is_goal_state()

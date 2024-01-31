@@ -1,4 +1,4 @@
-"""This module contains the Board class structure"""
+"""This module contains the Board class structure."""
 
 import logging
 from copy import deepcopy
@@ -46,6 +46,24 @@ class Board:
                 ["13", "14", "15", "_"],
             ]
         )
+
+    def __str__(self) -> str:
+        """Return a string representation of the current state for
+        printing to console.
+
+        Returns:
+            Formatted string representation of the current state.
+        """
+        string = "|" + ("-" * 16) + "|\n"
+
+        for rows in self.current_state:
+            string += "|"
+            for elem in rows:
+                string += f"{elem: <4}"
+            string += "|\n"
+
+        string += "|" + ("-" * 16) + "|\n"
+        return string
 
     def move(self, move: str) -> bool:
         """Swap the elements and update the current state.
