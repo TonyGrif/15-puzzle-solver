@@ -1,6 +1,7 @@
+from copy import deepcopy
+
 import numpy as np
 import pytest
-from copy import deepcopy
 
 from src.board import Board
 from src.utils import convert_string_to_list
