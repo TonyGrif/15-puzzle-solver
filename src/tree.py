@@ -61,8 +61,8 @@ class Node:
     nodes of a tree.
 
     Variables:
-        parent_state (Board): The parent state this node holds.
-        current_state (Board): The state this node holds.
+        parent_node (Node): The parent node for this node.
+        current_board (Board): The state this node holds.
         action_used (str): The action used on the parent to reach this state.
     """
 
@@ -78,15 +78,15 @@ class Node:
                 a deep copy of the parent's current board and stored in this nodes
                 current board.
         """
-        self.parent_state = None
-        self.current_state = None
+        self.parent_node = None
+        self.current_board = None
         self.action_used = None
 
-        if isinstance(input_state) is Board:
-            self.current_state = input_state
-        elif isinstance(input_state) is Node:
-            self.parent_state = input_state.current_state
-            self.current_state = deepcopy(input_state.current_state)
+        if isinstance(input_state, Board):
+            self.current_board = input_state
+        elif isinstance(input_state, Node):
+            self.parent_node = input_state
+            self.current_board = deepcopy(input_state.current_board)
 
         if action is not None:
             self.apply_action(action)
@@ -102,7 +102,7 @@ class Node:
         Returns:
             The parent state in the form of a numpy array.
         """
-        return self.parent_state.current_state
+        return self.parent_node.current_board.current_state
 
     def get_current_array(self) -> np.ndarray:
         """
@@ -111,7 +111,7 @@ class Node:
         Returns:
             The current state in the form of a numpy array.
         """
-        return self.current_state.current_state
+        return self.current_board.current_state
 
     def apply_action(self, action: str) -> None:
         """
@@ -122,7 +122,7 @@ class Node:
         Parameters:
             action (str): The valid action to apply.
         """
-        if self.current_state.move(action) is not False:
+        if self.current_board.move(action) is not False:
             self.action_used = action
         # IF GOAL STATE...
 

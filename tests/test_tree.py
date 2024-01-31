@@ -20,25 +20,27 @@ def tree():
 
 class TestNode:
     def test_init(self, root_node):
-        assert root_node.parent_state is None
-        assert root_node.current_state is not None
+        assert root_node.parent_node is None
+        assert root_node.current_board is not None
 
         child_node = Node(root_node)
-        assert child_node.parent_state is not None
-        assert child_node.current_state is not None
+        assert child_node.parent_node is not None
+        assert child_node.parent_node is root_node
+
+        assert isinstance(child_node.parent_node, Node)
+        assert isinstance(child_node.current_board, Board)
+        assert child_node.current_board is not None
         np.testing.assert_array_equal(
             root_node.get_current_array(), child_node.get_parent_array()
         )
 
+        assert root_node.action_used is None
+        assert child_node.action_used is None
+
     def test_action(self, root_node):
         child_node = Node(root_node, "Up")
-        assert child_node.parent_state is not None
-        assert child_node.current_state is not None
-
-        assert child_node.parent_state != child_node.current_state
-        assert child_node.parent_state == root_node.current_state
-        assert child_node.get_current_array().tolist()[0] == ["1", "7", "2", "4"]
-        assert child_node.action_used == "Up"
+        assert child_node.parent_node is not None
+        assert child_node.current_board is not None
 
         np.testing.assert_raises(
             AssertionError,
@@ -46,6 +48,14 @@ class TestNode:
             child_node.get_current_array(),
             child_node.get_parent_array(),
         )
+
+        np.testing.assert_array_equal(
+            child_node.get_parent_array(), root_node.get_current_array()
+        )
+        assert child_node.parent_node is root_node
+
+        assert child_node.get_current_array().tolist()[0] == ["1", "7", "2", "4"]
+        assert child_node.action_used == "Up"
 
         child_node = Node(root_node, "Down")
         assert child_node.action_used is None
