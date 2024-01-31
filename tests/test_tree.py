@@ -27,6 +27,15 @@ class TestNode:
         assert child_node.current_state is not None
         assert root_node.current_state == child_node.parent_state
 
+    def test_action(self, root_node):
+        child_node = Node(root_node, "Up")
+        assert child_node.parent_state is not None
+        assert child_node.current_state is not None
+
+        assert child_node.parent_state != child_node.current_state
+        assert child_node.parent_state == root_node.current_state
+        assert child_node.current_state.current_state.tolist()[0] == ["1", "7", "2", "4"]
+        assert child_node.action_used == "Up"
 
 class TestTree:
     def test_import(self):
