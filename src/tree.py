@@ -2,6 +2,9 @@
 """
 
 from copy import deepcopy
+
+import numpy as np
+
 from src.board import Board
 
 
@@ -60,6 +63,7 @@ class Node:
     Variables:
         parent_state (Board): The parent state this node holds.
         current_state (Board): The state this node holds.
+        action_used (str): The action used on the parent to reach this state.
     """
 
     def __init__(self, input_state: Board or Node, action: str = None) -> None:
@@ -70,7 +74,7 @@ class Node:
             input_state (Board or Node): The state this node will hold. The root node
                 should be initialized using the Board; all other nodes should be
                 initialized by passing in the parent node.
-            action (str): The valid move jof this object. This move will applied to
+            action (str): The valid move of this object. This move will applied to
                 a deep copy of the parent's current board and stored in this nodes
                 current board.
         """
@@ -78,9 +82,9 @@ class Node:
         self.current_state = None
         self.action_used = None
 
-        if type(input_state) is Board:
+        if isinstance(input_state) is Board:
             self.current_state = input_state
-        elif type(input_state) is Node:
+        elif isinstance(input_state) is Node:
             self.parent_state = input_state.current_state
             self.current_state = deepcopy(input_state.current_state)
 
@@ -90,7 +94,24 @@ class Node:
         # Path-cost will always be one (no need to implement)
         # Depth: increment the parent's depth val by one
         # Root count should be 0
-        pass
+
+    def get_parent_array(self) -> np.ndarray:
+        """
+        Return the parent state of this array.
+
+        Returns:
+            The parent state in the form of a numpy array.
+        """
+        return self.parent_state.current_state
+
+    def get_current_array(self) -> np.ndarray:
+        """
+        Return the current state of this array.
+
+        Returns:
+            The current state in the form of a numpy array.
+        """
+        return self.current_state.current_state
 
     def apply_action(self, action: str) -> None:
         """
@@ -101,7 +122,7 @@ class Node:
         Parameters:
             action (str): The valid action to apply.
         """
-        if self.current_state.move(action) is not None:
+        if self.current_state.move(action) is not False:
             self.action_used = action
         # IF GOAL STATE...
 
