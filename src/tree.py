@@ -1,6 +1,7 @@
 """This module contains the Tree and Node classes.
 """
 
+from copy import deepcopy
 from src.board import Board
 
 
@@ -14,16 +15,16 @@ class Tree:
         TBW
         """
         # Init with root node
-            # Ensure not goal state
+        # Ensure not goal state
 
         # Init state tracker to set
-            # Should not create new nodes of
-            # prev visited state
-            # Init with the root node's state
+        # Should not create new nodes of
+        # prev visited state
+        # Init with the root node's state
 
         # Init frontier with root node moves
-            # Stack for dfs
-            # Queue for bfs
+        # Stack for dfs
+        # Queue for bfs
 
         pass
 
@@ -33,7 +34,7 @@ class Tree:
         """
         # Ensure not at goal state
         # Get valid moves on a frontier node
-            # If there is no frontier, FAIL
+        # If there is no frontier, FAIL
         # Generate new nodes for each move
         # Add to frontier
         # Add to its parent node as child
@@ -50,26 +51,46 @@ class Tree:
         # Create new node and add
         pass
 
+
 class Node:
     """
-    TBW
+    This class contains information to creating and manipluating
+    nodes of a tree.
+
+    Variables:
+        parent_state (Board): The parent state this node holds.
+        current_state (Board): The state this node holds.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, input_state: Board or Node) -> None:
         """
-        TBW
+        Default constructor for a Node object.
+
+        Parameters:
+            input_state (Board or Node): The state this node will hold. The root node
+            should be initialized using the Board; all other nodes should be
+            initialized by passing in the parent node.
         """
+        self.parent_state = None
+        self.current_state = None
+
+        if type(input_state) is Board:
+            self.current_state = input_state
+        elif type(input_state) is Node:
+            self.parent_state = input_state.current_state
+            self.current_state = deepcopy(input_state.current_state)
+
         # Init with action ("Up", "Down"...)
         # Init with parent node (not a deep copy)
-            # Like a linked list
-            # Root will be none
+        # Like a linked list
+        # Root will be none
 
         # Deep copy parent node board to self node var
         # Perform move on deep copy board and store in state
 
         # Path-cost will always be one (no need to implement)
         # Depth: increment the parent's depth val by one
-            # Root count should be 0
+        # Root count should be 0
         pass
 
     def apply_action(self) -> None:
