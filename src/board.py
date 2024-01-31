@@ -1,7 +1,6 @@
 """This module contains the Board class structure."""
 
 import logging
-from copy import deepcopy
 from typing import List, Tuple
 
 import numpy as np
@@ -36,8 +35,7 @@ class Board:
             [matrix_list[0:4], matrix_list[4:8], matrix_list[8:12], matrix_list[12:16]]
         )
 
-        self.starting_state = init_array
-        self.current_state = deepcopy(init_array)
+        self.current_state = init_array
         self.goal_state = np.array(
             [
                 ["1", "2", "3", "4"],
@@ -143,9 +141,3 @@ class Board:
         """
         row, col = np.where(self.current_state == "_")
         return (row[0], col[0])
-
-    def _reset_to_init(self) -> None:
-        """Restore the current state to the initial. This is intended
-        for testing use only.
-        """
-        self.current_state = deepcopy(self.starting_state)

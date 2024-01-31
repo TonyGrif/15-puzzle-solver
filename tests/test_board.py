@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from copy import deepcopy
 
 from src.board import Board
 from src.utils import convert_string_to_list
@@ -18,36 +19,41 @@ def board(matrix_list):
 
 class TestBoard:
     def test_board_init(self, board):
-        assert board.starting_state is not None
-        assert np.shape(board.starting_state) == (4, 4)
+        assert board.current_state is not None
+        assert np.shape(board.current_state) == (4, 4)
 
         assert np.shape(board.goal_state) == (4, 4)
 
-        np.testing.assert_array_equal(board.starting_state, board.current_state)
+        np.testing.assert_raises(
+            AssertionError,
+            np.testing.assert_array_equal,
+            board.current_state,
+            board.goal_state,
+        )
 
     def test_move(self, board):
+        copy_board = deepcopy(board)
         assert board.move("Down") is False
 
         assert board.move("Left") is True
         np.testing.assert_raises(
             AssertionError,
             np.testing.assert_array_equal,
-            board.starting_state,
             board.current_state,
+            board.goal_state,
         )
         assert board.current_state.tolist()[0] == ["_", "1", "2", "4"]
         assert board.get_valid_moves() == ("Up", "Right")
 
-        board._reset_to_init()  # Go back to starting array
-        assert board.move("Up") is True
+        assert copy_board.move("Up") is True
         np.testing.assert_raises(
             AssertionError,
             np.testing.assert_array_equal,
-            board.starting_state,
             board.current_state,
+            copy_board.current_state,
         )
-        assert board.current_state.tolist()[0] == ["1", "7", "2", "4"]
-        assert board.current_state.tolist()[1] == ["5", "_", "3", "8"]
+        assert copy_board.current_state.tolist()[0] == ["1", "7", "2", "4"]
+        assert copy_board.current_state.tolist()[1] == ["5", "_", "3", "8"]
 
     def test_get_valid_moves(self, board):
         assert board.get_valid_moves() == ("Up", "Left", "Right")
