@@ -42,15 +42,44 @@ class Board:
             [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]]
         )
 
-    def move(self) -> None:
-        """Move and swap the elements in a valid way.
+    def move(self, move: str) -> bool:
+        """Move and swap the elements and update the current state.
 
         Parameters:
-            TBW
+            move (str): The direction to move in. Up", "Down",
+            "Left", and "Right" are the valid options.
+
         Returns:
-            TBW
+            True if the move was successful, False otherwise.
         """
-        pass
+        if move not in self.get_valid_moves():
+            return False
+
+        row, col = self._get_blank_spot()
+
+        if move == "Up":
+            self.current_state[row][col], self.current_state[row + 1][col] = (
+                self.current_state[row + 1][col],
+                self.current_state[row][col],
+            )
+        if move == "Down":
+            self.current_state[row][col], self.current_state[row - 1][col] = (
+                self.current_state[row - 1][col],
+                self.current_state[row][col],
+            )
+
+        if move == "Left":
+            self.current_state[row][col], self.current_state[row][col - 1] = (
+                self.current_state[row][col - 1],
+                self.current_state[row][col],
+            )
+        if move == "Right":
+            self.current_state[row][col], self.current_state[row][col + 1] = (
+                self.current_state[row][col + 1],
+                self.current_state[row][col],
+            )
+
+        return True
 
     def get_valid_moves(self) -> Tuple[str]:
         """Return the valid moves given the current state.
@@ -80,4 +109,11 @@ class Board:
         Returns:
             Two-dimensional tuple containing the indices of the blank.
         """
-        return np.where(self.current_state == "_")
+        row, col = np.where(self.current_state == "_")
+        return (row[0], col[0])
+
+    def _reset_to_init(self) -> None:
+        """Restore the current state to the initial. This is intended
+        for testing use only
+        """
+        self.current_state = deepcopy(self.starting_state)
