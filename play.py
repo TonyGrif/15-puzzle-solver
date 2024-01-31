@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Main module for the 15-Puzzle Game
+"""Main module for the 15-Puzzle Game.
 
 This module allows the user to play the 15-puzzle game with
 the given starting input.
@@ -15,9 +15,7 @@ from src.utils import convert_string_to_list, validate_list
 
 def main():
     """Main driver of the 15-Puzzle game script."""
-    parser = argparse.ArgumentParser(
-        description="Play a 15-Puzzle game."
-    )
+    parser = argparse.ArgumentParser(description="Play a 15-Puzzle game.")
 
     parser.add_argument(
         "matrix_string",
@@ -56,6 +54,14 @@ def main():
         print(ae)
 
     game_board = Board(matrix_list)
+
+    while not game_board.is_goal_state():
+        print(game_board)
+        valid_moves = game_board.get_valid_moves()
+        choice = input(f"Select a move to make ({valid_moves}): ")
+        game_board.move(choice)
+
+    print(game_board)
 
 
 if __name__ == "__main__":
