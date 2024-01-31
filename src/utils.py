@@ -1,7 +1,6 @@
 """This module contains utility functions for the 15-puzzle solver.
 """
 
-import logging
 from typing import List
 
 
@@ -17,7 +16,6 @@ def convert_string_to_list(matrix_string: str) -> List:
     matrix_list = matrix_string.split(" ")
     matrix_list = [char for char in matrix_list if char]
 
-    logging.debug("%s: %s", type(matrix_list), matrix_list)
     return matrix_list
 
 

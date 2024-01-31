@@ -16,6 +16,13 @@ def main():
     )
 
     parser.add_argument(
+        "search_routine",
+        type=str,
+        choices=["bfs", "dfs", "ish"],
+        help="The search algorithm to use on this puzzle.",
+    )
+
+    parser.add_argument(
         "matrix_string",
         type=str,
         default="1 _ 2 4 5 7 3 8 9 6 11 12 13 10 14 15",
@@ -50,6 +57,9 @@ def main():
         validate_list(matrix_list)
     except AssertionError as ae:
         print(ae)
+
+    logging.debug("Running %s routine on %s", args.search_routine, matrix_list)
+    game_board = Board(matrix_list)
 
 
 if __name__ == "__main__":
