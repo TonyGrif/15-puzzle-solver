@@ -38,7 +38,7 @@ class TestBoard:
         assert board.current_state.tolist()[0] == ["_", "1", "2", "4"]
         assert board.get_valid_moves() == ("Up", "Right")
 
-        board._reset_to_init() # Go back to starting array
+        board._reset_to_init()  # Go back to starting array
         assert board.move("Up") is True
         np.testing.assert_raises(
             AssertionError,

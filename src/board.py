@@ -39,11 +39,16 @@ class Board:
         self.starting_state = init_array
         self.current_state = deepcopy(init_array)
         self.goal_state = np.array(
-            [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]]
+            [
+                ["1", "2", "3", "4"],
+                ["5", "6", "7", "8"],
+                ["9", "10", "11", "12"],
+                ["13", "14", "15", "_"],
+            ]
         )
 
     def move(self, move: str) -> bool:
-        """Move and swap the elements and update the current state.
+        """Swap the elements and update the current state.
 
         Parameters:
             move (str): The direction to move in. Up", "Down",
@@ -103,6 +108,15 @@ class Board:
 
         return tuple(moves)
 
+    def is_goal_state(self) -> bool:
+        """Determine if the goal state has been reached.
+
+        Returns:
+            True if the current state is equal to the goal state,
+            False otherwise.
+        """
+        return np.array_equal(self.current_state, self.goal_state)
+
     def _get_blank_spot(self) -> Tuple[int]:
         """Get the location of the blank space.
 
@@ -114,6 +128,6 @@ class Board:
 
     def _reset_to_init(self) -> None:
         """Restore the current state to the initial. This is intended
-        for testing use only
+        for testing use only.
         """
         self.current_state = deepcopy(self.starting_state)
