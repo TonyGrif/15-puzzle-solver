@@ -62,17 +62,21 @@ class Node:
         current_state (Board): The state this node holds.
     """
 
-    def __init__(self, input_state: Board or Node) -> None:
+    def __init__(self, input_state: Board or Node, action: str = None) -> None:
         """
         Default constructor for a Node object.
 
         Parameters:
             input_state (Board or Node): The state this node will hold. The root node
-            should be initialized using the Board; all other nodes should be
-            initialized by passing in the parent node.
+                should be initialized using the Board; all other nodes should be
+                initialized by passing in the parent node.
+            action (str): The valid move jof this object. This move will applied to
+                a deep copy of the parent's current board and stored in this nodes
+                current board.
         """
         self.parent_state = None
         self.current_state = None
+        self.action_used = None
 
         if type(input_state) is Board:
             self.current_state = input_state
@@ -80,27 +84,26 @@ class Node:
             self.parent_state = input_state.current_state
             self.current_state = deepcopy(input_state.current_state)
 
-        # Init with action ("Up", "Down"...)
-        # Init with parent node (not a deep copy)
-        # Like a linked list
-        # Root will be none
-
-        # Deep copy parent node board to self node var
-        # Perform move on deep copy board and store in state
+        if action is not None:
+            self.apply_action(action)
 
         # Path-cost will always be one (no need to implement)
         # Depth: increment the parent's depth val by one
         # Root count should be 0
         pass
 
-    def apply_action(self) -> None:
+    def apply_action(self, action: str) -> None:
         """
-        TBW
+        Apply a valid move to the current state of this node. Invalid
+        moves will be discarded. This function also presumes this
+        node's current_state variable is a deep copy.
+
+        Parameters:
+            action (str): The valid action to apply.
         """
-        # Perform the move operation on the deep copy parent current state
-        # Return new current state
+        if self.current_state.move(action) is not None:
+            self.action_used = action
         # IF GOAL STATE...
-        pass
 
     def increment_depth(self) -> None:
         """
