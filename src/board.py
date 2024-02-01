@@ -63,6 +63,18 @@ class Board:
         string += "|" + ("-" * 16) + "|\n"
         return string
 
+    def state_to_string(self) -> str:
+        """Return the state of this board as a basic string.
+
+        Returns:
+            String representation of the current board.
+        """
+        string = ""
+        for rows in self.current_state.tolist():
+            for elem in rows:
+                string += str(elem) + " "
+        return string
+
     def move(self, move: str) -> bool:
         """Swap the elements and update the current state.
 

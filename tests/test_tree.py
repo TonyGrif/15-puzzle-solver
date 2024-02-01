@@ -22,10 +22,15 @@ class TestNode:
     def test_init(self, root_node):
         assert root_node.parent_node is None
         assert root_node.current_board is not None
+        assert root_node.children == []
 
         child_node = Node(root_node)
         assert child_node.parent_node is not None
         assert child_node.parent_node is root_node
+
+        assert child_node.children == []
+        assert len(root_node.children) == 1
+        assert root_node.children[0] is child_node
 
         assert isinstance(child_node.parent_node, Node)
         assert isinstance(child_node.current_board, Board)
@@ -74,9 +79,10 @@ class TestNode:
 class TestTree:
     def test_init(self, tree):
         assert tree.root is not None
-        assert tree.root.depth_count == 0
-        assert tree.expand_count == 1
-        assert tree.root.get_current_array() in tree.explored_set
+        assert tree.expand_count == 0
+        assert tree.root.get_current_string() not in tree.explored_set
+        assert len(tree.frontier) == 1
+        assert len(tree.explored_set) == 0
 
         goal_board = Board(
             convert_string_to_list("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 _")
@@ -84,8 +90,20 @@ class TestTree:
         with pytest.raises(Exception) as e:
             fail = Tree(goal_board)
 
+    def test_expand(self, tree):
+        assert len(tree.frontier) == 1
+
+        tree.expand()
+        assert len(tree.frontier) == 3
+        assert tree.root.get_current_string() in tree.explored_set
+        assert tree.expand_count == 1
+
+        tree.expand()
+        assert len(tree.frontier) == 6
+        assert tree.expand_count == 2
+
     def test_add_to_set(self, tree):
-        assert tree.root.get_current_array() in tree.explored_set
+        assert tree.root.get_current_string() in tree.explored_set
         # Add new node
         # Go back with move
         # False on add to set
