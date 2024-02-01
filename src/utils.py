@@ -4,7 +4,7 @@
 from typing import List
 
 
-def convert_string_to_list(matrix_string: str) -> List:
+def convert_string_to_list(matrix_string: str) -> List[str]:
     """Convert the input string to a list to be converted later.
 
     Parameters:
@@ -19,31 +19,30 @@ def convert_string_to_list(matrix_string: str) -> List:
     return matrix_list
 
 
-def validate_list(matrix_list: List) -> bool:
+def validate_list(matrix_list: List[str]) -> bool:
     """Validates the list to ensure the program can be started with the
-    provided state
+    provided state.
 
     Parameters:
-        matrix_list (List): The list of characters to be analyzed.
+        matrix_list (List[str]): The list of characters to be analyzed.
 
     Throws:
-        Assertion error for wrong number of character or improper
+        AssertionError for wrong number of character or improper
         numbers provided.
 
     Returns:
         Return True if the above checks are passed, throw an above
         exception otherwise.
     """
+    expectations = "(expected 1-15 & '_' character)"
     if len(matrix_list) != 16:
-        raise AssertionError(
-            "Invalid number of characters provided (expect 1-15 & '_' character)."
-        )
+        raise AssertionError(f"Invalid number of characters {expectations}.")
 
     for num in range(1, 16):
         if str(num) not in matrix_list:
-            raise AssertionError("Invalid number input (expect 1-15 & '_' character).")
+            raise AssertionError(f"Invalid numbers {expectations}.")
 
     if "_" not in matrix_list:
-        raise AssertionError("No blank provided (expect 1-15 & '_' character).")
+        raise AssertionError("No blank provided {expectations}.")
 
     return True
