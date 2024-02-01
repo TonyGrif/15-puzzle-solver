@@ -8,53 +8,6 @@ import numpy as np
 from src.board import Board
 
 
-class Tree:
-    """
-    TBW
-    """
-
-    def __init__(self) -> None:
-        """
-        TBW
-        """
-        # Init with root node
-        # Ensure not goal state
-
-        # Init state tracker to set
-        # Should not create new nodes of
-        # prev visited state
-        # Init with the root node's state
-
-        # Init frontier with root node moves
-        # Stack for dfs
-        # Queue for bfs
-
-        pass
-
-    def expand(self) -> None:
-        """
-        TBW
-        """
-        # Ensure not at goal state
-        # Get valid moves on a frontier node
-        # If there is no frontier, FAIL
-        # Generate new nodes for each move
-        # Add to frontier
-        # Add to its parent node as child
-        # If node is goal state, SUCCESS
-        pass
-
-    def add_to_frontier(self) -> None:
-        """
-        TBW
-        """
-        # If frontier is stack, add to top of stack
-        # If frontier is queue, add to back of queue
-        # Add to frontier if the state has not already been seen or added
-        # Create new node and add
-        pass
-
-
 class Node:
     """
     This class contains information to creating and manipluating
@@ -140,3 +93,67 @@ class Node:
             True if this is the goal state, False otherwise.
         """
         return self.current_board.is_goal_state()
+
+
+class Tree:
+    """
+    This class contains information to creating and manipulating
+    a search tree.
+
+    Variables:
+        root (Node): The root node for this Tree.
+    """
+
+    def __init__(self, root: Node) -> None:
+        """
+        Default constructor for a Tree object.
+
+        Parameters:
+            root (Node): The root node of this tree.
+        """
+        if root.is_goal_state():
+            raise (AssertionError("Root is already in goal state."))
+        self.root = root
+
+        # Init state tracker to set
+        # Should not create new nodes of
+        # prev visited state
+        # Init with the root node's state
+
+        # Init frontier with root node moves
+        # Stack for dfs
+        # Queue for bfs
+
+        pass
+
+    def expand(self) -> None:
+        """
+        TBW
+        """
+        # Ensure not at goal state
+        # Get valid moves on a frontier node
+        # If there is no frontier, FAIL
+        # Generate new nodes for each move
+        # Add to frontier
+        # Add to its parent node as child
+        # If node is goal state, SUCCESS
+        pass
+
+    def add_to_frontier(self) -> None:
+        """
+        TBW
+        """
+        # If frontier is stack, add to top of stack
+        # If frontier is queue, add to back of queue
+        # Add to frontier if the state has not already been seen or added
+        # Create new node and add
+        pass
+
+    def get_expanded_node_count(self) -> int:
+        """
+        Get the number of expanded nodes for this tree.
+
+        Returns:
+            Integer count of nodes expanded.
+        """
+        return 0
