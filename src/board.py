@@ -37,11 +37,22 @@ class Board:
         )
 
     def __str__(self) -> str:
-        """Return a string representation of the current state for
-        printing to console.
+        """Return a string representation of the current state.
 
         Returns:
-            Formatted string representation of the current state.
+            String representation of the current state.
+        """
+        string = ""
+        for rows in self.current_state.tolist():
+            for elem in rows:
+                string += str(elem) + " "
+        return string
+
+    def fstring(self) -> str:
+        """Return the state of this board as a formatted string.
+
+        Returns:
+            String representation of the current board containing borders.
         """
         string = "|" + ("-" * 16) + "|\n"
 
@@ -52,18 +63,6 @@ class Board:
             string += "|\n"
 
         string += "|" + ("-" * 16) + "|\n"
-        return string
-
-    def state_to_string(self) -> str:
-        """Return the state of this board as a basic string.
-
-        Returns:
-            String representation of the current board.
-        """
-        string = ""
-        for rows in self.current_state.tolist():
-            for elem in rows:
-                string += str(elem) + " "
         return string
 
     def move(self, move: str) -> bool:

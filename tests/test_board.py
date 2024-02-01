@@ -27,6 +27,19 @@ class TestBoard:
             board.goal_state,
         )
 
+    def test_strings(self, board):
+        string = str(board)
+
+        for row in board.current_state:
+            for elem in row:
+                assert elem in string
+
+        fstring = board.fstring()
+
+        for row in board.current_state:
+            for elem in row:
+                assert elem in fstring
+
     def test_move(self, board):
         copy_board = deepcopy(board)
         assert board.move("Down") is False

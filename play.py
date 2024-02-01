@@ -56,12 +56,12 @@ def main():
     game_board = Board(matrix_list)
 
     while not game_board.is_goal_state():
-        print(game_board)
+        print(game_board.fstring())
         valid_moves = game_board.get_valid_moves()
         choice = input(f"Select a move to make {valid_moves}: ")
         game_board.move(choice)
 
-    print(game_board)
+    print(game_board.fstring())
 
 
 if __name__ == "__main__":
