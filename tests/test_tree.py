@@ -22,27 +22,42 @@ class TestNode:
     def test_init(self, root_node):
         assert root_node.parent_node is None
         assert root_node.current_board is not None
+        assert root_node.action_used is None
+        assert root_node.depth_count == 0
         assert root_node.children == []
 
         child_node = Node(root_node)
         assert child_node.parent_node is not None
         assert child_node.parent_node is root_node
-
-        assert child_node.children == []
-        assert len(root_node.children) == 1
-        assert root_node.children[0] is child_node
-
         assert isinstance(child_node.parent_node, Node)
+
         assert isinstance(child_node.current_board, Board)
         assert child_node.current_board is not None
         np.testing.assert_array_equal(
             root_node.get_current_array(), child_node.get_parent_array()
         )
-
-        assert root_node.action_used is None
-        assert root_node.depth_count == 0
         assert child_node.action_used is None
         assert child_node.depth_count == 0
+
+        assert child_node.children == []
+        assert len(root_node.children) == 1
+        assert root_node.children[0] is child_node
+
+        child_node = Node(root_node, "Left")
+        assert child_node.parent_node is root_node
+
+        np.testing.assert_raises(
+            AssertionError,
+            np.testing.assert_array_equal,
+            child_node.get_current_array(),
+            child_node.get_parent_array(),
+        )
+        np.testing.assert_raises(
+            AssertionError,
+            np.testing.assert_array_equal,
+            child_node.get_current_array(),
+            root_node.get_current_array(),
+        )
 
     def test_action(self, root_node):
         child_node = Node(root_node, "Up")
@@ -104,7 +119,7 @@ class TestTree:
 
     def test_add_to_set(self, tree):
         assert tree.root.get_current_string() not in tree.explored_set
-        
+
         tree.expand()
         assert tree.root.get_current_string() in tree.explored_set
         assert len(tree.explored_set) == 1

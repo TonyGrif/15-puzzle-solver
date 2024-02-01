@@ -1,11 +1,11 @@
 """This module contains the Tree and Node classes.
 """
 
-from copy import deepcopy
+import logging
 from collections import deque
+from copy import deepcopy
 from typing import Tuple
 
-import logging
 import numpy as np
 
 from src.board import Board
