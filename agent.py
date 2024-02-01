@@ -6,7 +6,7 @@ import argparse
 import logging
 
 from src.board import Board
-from src.tree import Tree, Node
+from src.tree import Node, Tree
 from src.utils import convert_string_to_list, validate_list
 
 
@@ -58,11 +58,11 @@ def main():
         validate_list(matrix_list)
     except AssertionError as ae:
         print(ae)
+        return
 
     logging.debug("Running %s routine on %s", args.search_routine, matrix_list)
     game_board = Board(matrix_list)
-    root = Node(game_board)
-    tree = Tree(root)
+    tree = Tree(Node(game_board))
 
     while tree.expand() is None:
         tree.expand()
