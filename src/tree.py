@@ -64,6 +64,7 @@ class Node:
         parent_node (Node): The parent node for this node.
         current_board (Board): The state this node holds.
         action_used (str): The action used on the parent to reach this state.
+        depth_count (int): The amount of moves that have led to this node.
     """
 
     def __init__(self, input_state: Board or Node, action: str = None) -> None:
@@ -81,17 +82,18 @@ class Node:
         self.parent_node = None
         self.current_board = None
         self.action_used = None
+        self.depth_count = 0
 
         if isinstance(input_state, Board):
             self.current_board = input_state
         elif isinstance(input_state, Node):
             self.parent_node = input_state
             self.current_board = deepcopy(input_state.current_board)
+            self.depth_count = input_state.depth_count
 
         if action is not None:
             self.apply_action(action)
 
-        # Path-cost will always be one (no need to implement)
         # Depth: increment the parent's depth val by one
         # Root count should be 0
 
@@ -124,16 +126,14 @@ class Node:
         """
         if self.current_board.move(action) is not False:
             self.action_used = action
+            self.increment_depth()
         # IF GOAL STATE...
 
     def increment_depth(self) -> None:
         """
-        TBW
+        Increment the depth counter by one upon successful action.
         """
-        # If parent is root, set to 1
-        # If this node is root, set to 0
-        # Otherwise, increment depth by one
-        pass
+        self.depth_count += 1
 
     def is_goal_state(self) -> bool:
         """

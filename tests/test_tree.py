@@ -35,12 +35,15 @@ class TestNode:
         )
 
         assert root_node.action_used is None
+        assert root_node.depth_count == 0
         assert child_node.action_used is None
+        assert child_node.depth_count == 0
 
     def test_action(self, root_node):
         child_node = Node(root_node, "Up")
         assert child_node.parent_node is not None
         assert child_node.current_board is not None
+        assert child_node.depth_count == 1
 
         np.testing.assert_raises(
             AssertionError,
@@ -56,6 +59,10 @@ class TestNode:
 
         assert child_node.get_current_array().tolist()[0] == ["1", "7", "2", "4"]
         assert child_node.action_used == "Up"
+
+        grandchild_node = Node(child_node, "Left")
+        assert grandchild_node.action_used == "Left"
+        assert grandchild_node.depth_count == 2
 
         child_node = Node(root_node, "Down")
         assert child_node.action_used is None
