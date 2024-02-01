@@ -12,8 +12,7 @@ from src.board import Board
 
 
 class Node:
-    """
-    This class contains information to creating and manipluating
+    """This class contains information to creating and manipluating
     nodes of a tree.
 
     Variables:
@@ -24,9 +23,8 @@ class Node:
         children (List[Node]): A list of nodes created from this node.
     """
 
-    def __init__(self, input_state: Board or Node, action: str = None) -> None:
-        """
-        Default constructor for a Node object.
+    def __init__(self, input_state: Board or "Node", action: str = None) -> None:
+        """Default constructor for a Node object.
 
         Parameters:
             input_state (Board or Node): The state this node will hold. The root node
@@ -56,8 +54,7 @@ class Node:
             self.apply_action(action)
 
     def get_parent_array(self) -> np.ndarray:
-        """
-        Return the parent state of this array.
+        """Return the parent state of this array.
 
         Returns:
             The parent state in the form of a numpy array.
@@ -65,8 +62,7 @@ class Node:
         return self.parent_node.current_board.current_state
 
     def get_current_array(self) -> np.ndarray:
-        """
-        Return the current state of this array.
+        """Return the current state of this array.
 
         Returns:
             The current state in the form of a numpy array.
@@ -74,8 +70,7 @@ class Node:
         return self.current_board.current_state
 
     def get_current_string(self) -> str:
-        """
-        Return the string state of this Node.
+        """Return the string state of this Node.
 
         Returns:
             String representation of this Node.
@@ -83,8 +78,7 @@ class Node:
         return str(self.current_board)
 
     def get_moves(self) -> Tuple[str]:
-        """
-        Wrapper function to get the possible moves of this node based on state.
+        """Wrapper function to get the possible moves of this node based on state.
 
         Returns:
             A tuple of string moves.
@@ -92,8 +86,7 @@ class Node:
         return self.current_board.get_valid_moves()
 
     def apply_action(self, action: str) -> None:
-        """
-        Apply a valid move to the current state of this node. Invalid
+        """Apply a valid move to the current state of this node. Invalid
         moves will be discarded. This function also presumes this
         node's current_state variable is a deep copy.
 
@@ -105,14 +98,11 @@ class Node:
             self.increment_depth()
 
     def increment_depth(self) -> None:
-        """
-        Increment the depth counter by one upon successful action.
-        """
+        """Increment the depth counter by one upon successful action."""
         self.depth_count += 1
 
     def is_goal_state(self) -> bool:
-        """
-        Determine if the current board state is the goal state.
+        """Determine if the current board state is the goal state.
 
         Returns:
             True if this is the goal state, False otherwise.
