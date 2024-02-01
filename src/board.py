@@ -11,25 +11,19 @@ class Board:
     the actions that can be performed on the board.
 
     Variables:
-        starting_state (np.ndarray): The starting point for this game.
         current_state (np.ndarray): The current state of this game.
         goal_state (np.ndarray): The end goal to reach for this game.
     """
 
-    def __init__(self, matrix_list: List) -> None:
+    def __init__(self, matrix_list: List[str]) -> None:
         """The default constructor for a board object.
 
         Parameters:
-            matrix_list (List): Single list containing the board data.
+            matrix_list (List[str]): Single list containing the board data.
             The data is expected to contain the numbers 0-15 with a blank
             space represented by 0 and will not be validated within
             this class.
         """
-        logging.debug("Row 1: %s", matrix_list[0:4])
-        logging.debug("Row 2: %s", matrix_list[4:8])
-        logging.debug("Row 3: %s", matrix_list[8:12])
-        logging.debug("Row 4: %s", matrix_list[12:16])
-
         # TODO: Try list compressions to aid readability
         init_array = np.array(
             [matrix_list[0:4], matrix_list[4:8], matrix_list[8:12], matrix_list[12:16]]
