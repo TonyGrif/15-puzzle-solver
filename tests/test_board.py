@@ -8,14 +8,9 @@ from src.utils import convert_string_to_list
 
 
 @pytest.fixture
-def matrix_list():
+def board():
     string = "1 _ 2 4 5 7 3 8 9 6 11 12 13 10 14 15"
-    return convert_string_to_list(string)
-
-
-@pytest.fixture
-def board(matrix_list):
-    return Board(matrix_list)
+    return Board(convert_string_to_list(string))
 
 
 class TestBoard:
