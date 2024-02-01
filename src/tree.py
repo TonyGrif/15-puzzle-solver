@@ -94,9 +94,6 @@ class Node:
         if action is not None:
             self.apply_action(action)
 
-        # Depth: increment the parent's depth val by one
-        # Root count should be 0
-
     def get_parent_array(self) -> np.ndarray:
         """
         Return the parent state of this array.
