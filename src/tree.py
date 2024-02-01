@@ -77,7 +77,6 @@ class Node:
         if self.current_board.move(action) is not False:
             self.action_used = action
             self.increment_depth()
-        # IF GOAL STATE...
 
     def increment_depth(self) -> None:
         """
@@ -102,6 +101,7 @@ class Tree:
 
     Variables:
         root (Node): The root node for this Tree.
+        expand_count (int): The number of nodes this tree has expanded.
     """
 
     def __init__(self, root: Node) -> None:
@@ -111,9 +111,16 @@ class Tree:
         Parameters:
             root (Node): The root node of this tree.
         """
+        self.root = None
+        self.expand_count = 0
+        self.explored_set = []
+
         if root.is_goal_state():
             raise (AssertionError("Root is already in goal state."))
+
         self.root = root
+        self.add_to_set(self.root)
+        self.increment_expand_counter()
 
         # Init state tracker to set
         # Should not create new nodes of
@@ -149,11 +156,24 @@ class Tree:
         # Create new node and add
         pass
 
-    def get_expanded_node_count(self) -> int:
+    def add_to_set(self, state: Node) -> bool:
         """
-        Get the number of expanded nodes for this tree.
+        Add the node's state to the set if it has not already been seen.
+
+        Parameters:
+            state (Node): The node containing a state.
 
         Returns:
-            Integer count of nodes expanded.
+            True if the state was sucessfully added, False otherwise.
         """
-        return 0
+        if state.get_current_array() in self.explored_set:
+            return False
+
+        self.explored_set.append(state.get_current_array())
+        return True
+
+    def increment_expand_counter(self) -> None:
+        """
+        Increment the number of expanded nodes by one.
+        """
+        self.expand_count += 1
