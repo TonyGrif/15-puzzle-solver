@@ -2,7 +2,10 @@
 """
 
 from copy import deepcopy
+from collections import deque
+from typing import Tuple
 
+import logging
 import numpy as np
 
 from src.board import Board
@@ -18,6 +21,7 @@ class Node:
         current_board (Board): The state this node holds.
         action_used (str): The action used on the parent to reach this state.
         depth_count (int): The amount of moves that have led to this node.
+        children (List[Node]): A list of nodes created from this node.
     """
 
     def __init__(self, input_state: Board or Node, action: str = None) -> None:
@@ -36,6 +40,7 @@ class Node:
         self.current_board = None
         self.action_used = None
         self.depth_count = 0
+        self.children = []
 
         if isinstance(input_state, Board):
             self.current_board = input_state
@@ -43,6 +48,9 @@ class Node:
             self.parent_node = input_state
             self.current_board = deepcopy(input_state.current_board)
             self.depth_count = input_state.depth_count
+
+            # Linking this Node to the parent
+            input_state.children.append(self)
 
         if action is not None:
             self.apply_action(action)
@@ -64,6 +72,24 @@ class Node:
             The current state in the form of a numpy array.
         """
         return self.current_board.current_state
+
+    def get_current_string(self) -> str:
+        """
+        Return the string state of this Node.
+
+        Returns:
+            String representation of this Node.
+        """
+        return self.current_board.state_to_string()
+
+    def get_moves(self) -> Tuple[str]:
+        """
+        Wrapper function to get the possible moves of this node based on state.
+
+        Returns:
+            A tuple of string moves.
+        """
+        return self.current_board.get_valid_moves()
 
     def apply_action(self, action: str) -> None:
         """
@@ -102,6 +128,9 @@ class Tree:
     Variables:
         root (Node): The root node for this Tree.
         expand_count (int): The number of nodes this tree has expanded.
+        explored_set (list): The collection of nodes that have already been
+            seen by this tree.
+        frontier (deque): The collection of all unexpanded nodes.
     """
 
     def __init__(self, root: Node) -> None:
@@ -113,48 +142,59 @@ class Tree:
         """
         self.root = None
         self.expand_count = 0
-        self.explored_set = []
+        self.explored_set = set()
+        self.frontier = deque()
 
         if root.is_goal_state():
             raise (AssertionError("Root is already in goal state."))
 
         self.root = root
-        self.add_to_set(self.root)
+        self.frontier.append(self.root)
+        logging.info("Creating new tree with %s", root.get_current_array().tolist())
+
+    def expand(self) -> Node:
+        """
+        Expand the current node to create new nodes based on valid moves. The
+        node selected will be pulled from the frontier.
+
+        Throws:
+            IndexError if the frontier is empty.
+
+        Returns:
+            Return the Node if a goal state has been reached; None otherwise.
+        """
+        if len(self.frontier) == 0:
+            raise (IndexError("No solution found."))
+        node = self.frontier.popleft()
+
+        if node.is_goal_state() is True:
+            logging.info("Goal state found %s", node.get_current_string())
+            return node
+
+        if self.add_to_set(node) is True:
+            logging.info(
+                "Expanding node %s with depth %s",
+                node.get_current_array().tolist(),
+                node.depth_count,
+            )
+            self.add_moves_to_frontier(node)
+
         self.increment_expand_counter()
+        return None
 
-        # Init state tracker to set
-        # Should not create new nodes of
-        # prev visited state
-        # Init with the root node's state
-
-        # Init frontier with root node moves
-        # Stack for dfs
-        # Queue for bfs
-
-        pass
-
-    def expand(self) -> None:
+    def add_moves_to_frontier(self, node: Node) -> None:
         """
-        TBW
-        """
-        # Ensure not at goal state
-        # Get valid moves on a frontier node
-        # If there is no frontier, FAIL
-        # Generate new nodes for each move
-        # Add to frontier
-        # Add to its parent node as child
-        # If node is goal state, SUCCESS
-        pass
+        Add new unexplored nodes to the frontier.
 
-    def add_to_frontier(self) -> None:
+        Parameters:
+            node (Node): The node to expand.
         """
-        TBW
-        """
-        # If frontier is stack, add to top of stack
-        # If frontier is queue, add to back of queue
-        # Add to frontier if the state has not already been seen or added
-        # Create new node and add
-        pass
+        for moves in node.get_moves():
+            new_node = Node(node, moves)
+            self.frontier.append(new_node)
+            logging.debug(
+                "New node added to frontier: %s", new_node.get_current_array().tolist()
+            )
 
     def add_to_set(self, state: Node) -> bool:
         """
@@ -166,10 +206,10 @@ class Tree:
         Returns:
             True if the state was sucessfully added, False otherwise.
         """
-        if state.get_current_array() in self.explored_set:
+        if state.get_current_string() in self.explored_set:
             return False
 
-        self.explored_set.append(state.get_current_array())
+        self.explored_set.add(state.get_current_string())
         return True
 
     def increment_expand_counter(self) -> None:
