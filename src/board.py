@@ -1,6 +1,5 @@
 """This module contains the Board class structure."""
 
-import logging
 from typing import List, Tuple
 
 import numpy as np
@@ -24,12 +23,10 @@ class Board:
             space represented by 0 and will not be validated within
             this class.
         """
-        # TODO: Try list compressions to aid readability
-        init_array = np.array(
-            [matrix_list[0:4], matrix_list[4:8], matrix_list[8:12], matrix_list[12:16]]
+        self.current_state = np.array(
+            [matrix_list[x : x + 4] for x in range(0, len(matrix_list), 4)]
         )
 
-        self.current_state = init_array
         self.goal_state = np.array(
             [
                 ["1", "2", "3", "4"],
