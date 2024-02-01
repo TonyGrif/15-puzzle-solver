@@ -75,9 +75,18 @@ class TestTree:
     def test_init(self, tree):
         assert tree.root is not None
         assert tree.root.depth_count == 0
+        assert tree.expand_count == 1
+        assert tree.root.get_current_array() in tree.explored_set
 
         goal_board = Board(
             convert_string_to_list("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 _")
         )
         with pytest.raises(Exception) as e:
             fail = Tree(goal_board)
+
+    def test_add_to_set(self, tree):
+        assert tree.root.get_current_array() in tree.explored_set
+        # Add new node
+        # Go back with move
+        # False on add to set
+        # Same len as before
