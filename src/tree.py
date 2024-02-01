@@ -135,10 +135,11 @@ class Node:
         # Otherwise, increment depth by one
         pass
 
-    def is_goal_state(self) -> None:
+    def is_goal_state(self) -> bool:
         """
-        TBW
+        Determine if the current board state is the goal state.
+
+        Returns:
+            True if this is the goal state, False otherwise.
         """
-        # Wrapper around board's is_goal_state function
-        # Return the moves used if so
-        pass
+        return self.current_board.is_goal_state()
