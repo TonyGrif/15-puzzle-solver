@@ -23,16 +23,17 @@ class Node:
         children (List[Node]): A list of nodes created from this node.
     """
 
-    def __init__(self, input_state: Board or "Node", action: str = None) -> None:
+    def __init__(self, state: Board or "Node", action: str = None) -> None:
         """Default constructor for a Node object.
 
         Parameters:
-            input_state (Board or Node): The state this node will hold. The root node
-                should be initialized using the Board; all other nodes should be
-                initialized by passing in the parent node.
-            action (str): The valid move of this object. This move will applied to
-                a deep copy of the parent's current board and stored in this nodes
-                current board.
+            input_state (Board or Node): The state this node will hold. The
+                root node should be initialized using the Board;
+                all other nodes should be initialized by passing
+                in the parent node.
+            action (str): The valid move of this object. This move will
+                be applied to a deep copy of the parent's current
+                board and stored in this nodes current board.
         """
         self.parent_node = None
         self.current_board = None
@@ -40,15 +41,15 @@ class Node:
         self.depth_count = 0
         self.children = []
 
-        if isinstance(input_state, Board):
-            self.current_board = input_state
-        elif isinstance(input_state, Node):
-            self.parent_node = input_state
-            self.current_board = deepcopy(input_state.current_board)
-            self.depth_count = input_state.depth_count
+        if isinstance(state, Board):
+            self.current_board = state
+        elif isinstance(state, Node):
+            self.parent_node = state
+            self.current_board = deepcopy(state.current_board)
+            self.depth_count = state.depth_count
 
             # Linking this Node to the parent
-            input_state.children.append(self)
+            state.children.append(self)
 
         if action is not None:
             self.apply_action(action)
@@ -78,7 +79,7 @@ class Node:
         return str(self.current_board)
 
     def get_moves(self) -> Tuple[str]:
-        """Wrapper function to get the possible moves of this node based on state.
+        """Wrapper function to get the moves of this node based on state.
 
         Returns:
             A tuple of string moves.
