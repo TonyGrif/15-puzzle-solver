@@ -103,8 +103,11 @@ class TestTree:
         assert tree.expand_count == 2
 
     def test_add_to_set(self, tree):
+        assert tree.root.get_current_string() not in tree.explored_set
+        
+        tree.expand()
         assert tree.root.get_current_string() in tree.explored_set
-        # Add new node
-        # Go back with move
-        # False on add to set
-        # Same len as before
+        assert len(tree.explored_set) == 1
+
+        tree.expand()
+        assert len(tree.explored_set) == 2
