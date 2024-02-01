@@ -80,7 +80,7 @@ class Node:
         Returns:
             String representation of this Node.
         """
-        return self.current_board.state_to_string()
+        return str(self.current_board)
 
     def get_moves(self) -> Tuple[str]:
         """
