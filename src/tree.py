@@ -4,7 +4,7 @@
 import logging
 from collections import deque
 from copy import deepcopy
-from typing import Tuple
+from typing import Deque, Set, Tuple
 
 import numpy as np
 
@@ -159,17 +159,43 @@ class Tree:
         Parameters:
             root (Node): The root node of this tree.
         """
-        self.root = None
+        self._root = root
         self.expand_count = 0
-        self.explored_set = set()
+        self._explored_set = set()
         self._frontier = deque()
 
         if root.is_goal_state():
             raise AssertionError("Root is already in goal state.")
 
-        self.root = root
         self._frontier.append(self.root)
         logging.info("Creating new tree with %s", root.get_current_array().tolist())
+
+    @property
+    def root(self) -> Node:
+        """Return the root of this Tree.
+
+        Returns:
+            Node representation of the root of this Tree.
+        """
+        return self._root
+
+    @property
+    def explored_set(self) -> Set[str]:
+        """Return the explored set of this Tree.
+
+        Returns:
+            Set of strings containing the states seen by this Tree.
+        """
+        return self._explored_set
+
+    @property
+    def frontier(self) -> Deque[Node]:
+        """Return the current frontier of this Tree.
+
+        Returns:
+            Deque of Nodes not expanded.
+        """
+        return self._frontier
 
     def expand(self) -> Node:
         """Expand the current node to create new nodes based on valid moves.
