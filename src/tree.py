@@ -35,17 +35,17 @@ class Node:
                 be applied to a deep copy of the parent's current
                 board and stored in this nodes current board.
         """
-        self.parent_node = None
-        self.current_board = None
         self.action_used = None
         self.depth_count = 0
         self.children = []
 
         if isinstance(state, Board):
-            self.current_board = state
+            self._parent_node = None
+            self._current_board = state
         elif isinstance(state, Node):
-            self.parent_node = state
-            self.current_board = deepcopy(state.current_board)
+            self._parent_node = state
+            self._current_board = deepcopy(state.current_board)
+
             self.depth_count = state.depth_count
 
             # Linking this Node to the parent
@@ -53,6 +53,24 @@ class Node:
 
         if action is not None:
             self.apply_action(action)
+
+    @property
+    def parent_node(self) -> "Node":
+        """Return the parent Node of this Node if one exists.
+
+        Returns:
+            Returns the parent Node if there is one; None otherwise.
+        """
+        return self._parent_node
+
+    @property
+    def current_board(self) -> Board:
+        """Return the Board state this Node holds.
+
+        Returns:
+            The Board object this Node tracks.
+        """
+        return self._current_board
 
     def get_parent_array(self) -> np.ndarray:
         """Return the parent state of this array.
