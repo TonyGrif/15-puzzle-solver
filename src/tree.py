@@ -207,7 +207,7 @@ class Tree:
         Returns:
             Return the Node if a goal state has been reached; None otherwise.
         """
-        if self.get_length_of_frontier() == 0:
+        if len(self.frontier) == 0:
             raise IndexError("No solution found.")
         node = self._frontier.popleft()
 
@@ -225,14 +225,6 @@ class Tree:
 
         self._increment_expand_counter()
         return None
-
-    def get_length_of_frontier(self) -> int:
-        """Get the length of the current frontier.
-
-        Returns:
-            Integer length of the frontier.
-        """
-        return len(self._frontier)
 
     def _add_moves_to_frontier(self, node: Node) -> None:
         """Add new unexplored nodes to the frontier.
