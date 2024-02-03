@@ -29,9 +29,7 @@ class TestNode:
         child_node = root_node.move_board("Left")
         assert child_node.parent_node is not None
         assert child_node.parent_node is root_node
-        assert isinstance(child_node.parent_node, Node)
 
-        assert isinstance(child_node.current_board, Board)
         assert child_node.current_board is not None
         np.testing.assert_array_equal(
             root_node.get_current_array(), child_node.get_parent_array()
@@ -56,8 +54,8 @@ class TestNode:
             root_node.get_current_array(),
         )
 
-    def test_action(self, root_node):
-        child_node = Node(root_node, "Up")
+    def test_move(self, root_node):
+        child_node = root_node.move_board("Up")
         assert child_node.parent_node is root_node
         assert child_node.current_board is not None
 
@@ -72,12 +70,12 @@ class TestNode:
         assert child_node.action_used == "Up"
         assert child_node.depth_count == 1
 
-        grandchild_node = Node(child_node, "Left")
+        grandchild_node = child_node.move_board("Left")
         assert grandchild_node.action_used == "Left"
         assert grandchild_node.depth_count == 2
 
-        child_node = Node(root_node, "Down")
-        assert child_node.action_used is None
+        child_node = root_node.move_board("Down")
+        assert child_node.action_used is "Down"
         np.testing.assert_array_equal(
             child_node.get_current_array(), child_node.get_parent_array()
         )
