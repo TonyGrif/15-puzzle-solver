@@ -26,7 +26,7 @@ class TestNode:
         assert root_node.depth_count == 0
         assert root_node.children == []
 
-        child_node = Node(root_node)
+        child_node = root_node.move_board("Left")
         assert child_node.parent_node is not None
         assert child_node.parent_node is root_node
         assert isinstance(child_node.parent_node, Node)
@@ -36,15 +36,12 @@ class TestNode:
         np.testing.assert_array_equal(
             root_node.get_current_array(), child_node.get_parent_array()
         )
-        assert child_node.action_used is None
-        assert child_node.depth_count == 0
+        assert child_node.action_used is "Left"
+        assert child_node.depth_count == 1
 
         assert child_node.children == []
         assert len(root_node.children) == 1
         assert root_node.children[0] is child_node
-
-        child_node = Node(root_node, "Left")
-        assert child_node.parent_node is root_node
 
         np.testing.assert_raises(
             AssertionError,
