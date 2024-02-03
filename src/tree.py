@@ -112,21 +112,19 @@ class Node:
 
 
 class Tree:
-    """
-    This class contains information to creating and manipulating
+    """This class contains information to creating and manipulating
     a search tree.
 
     Variables:
         root (Node): The root node for this Tree.
         expand_count (int): The number of nodes this tree has expanded.
-        explored_set (list): The collection of nodes that have already been
+        explored_set (List[str]): The collection of states that have already been
             seen by this tree.
-        frontier (deque): The collection of all unexpanded nodes.
+        frontier (deque[Node]): The collection of all unexpanded nodes.
     """
 
     def __init__(self, root: Node) -> None:
-        """
-        Default constructor for a Tree object.
+        """Default constructor for a Tree object.
 
         Parameters:
             root (Node): The root node of this tree.
@@ -137,16 +135,15 @@ class Tree:
         self.frontier = deque()
 
         if root.is_goal_state():
-            raise (AssertionError("Root is already in goal state."))
+            raise AssertionError("Root is already in goal state.")
 
         self.root = root
         self.frontier.append(self.root)
         logging.info("Creating new tree with %s", root.get_current_array().tolist())
 
     def expand(self) -> Node:
-        """
-        Expand the current node to create new nodes based on valid moves. The
-        node selected will be pulled from the frontier.
+        """Expand the current node to create new nodes based on valid moves.
+        The node selected will be pulled from the frontier.
 
         Throws:
             IndexError if the frontier is empty.
@@ -155,7 +152,7 @@ class Tree:
             Return the Node if a goal state has been reached; None otherwise.
         """
         if len(self.frontier) == 0:
-            raise (IndexError("No solution found."))
+            raise IndexError("No solution found.")
         node = self.frontier.popleft()
 
         if node.is_goal_state() is True:
@@ -174,8 +171,7 @@ class Tree:
         return None
 
     def add_moves_to_frontier(self, node: Node) -> None:
-        """
-        Add new unexplored nodes to the frontier.
+        """Add new unexplored nodes to the frontier.
 
         Parameters:
             node (Node): The node to expand.
@@ -188,8 +184,7 @@ class Tree:
             )
 
     def add_to_set(self, state: Node) -> bool:
-        """
-        Add the node's state to the set if it has not already been seen.
+        """Add the node's state to the set if it has not already been seen.
 
         Parameters:
             state (Node): The node containing a state.
@@ -204,7 +199,5 @@ class Tree:
         return True
 
     def increment_expand_counter(self) -> None:
-        """
-        Increment the number of expanded nodes by one.
-        """
+        """Increment the number of expanded nodes by one."""
         self.expand_count += 1
