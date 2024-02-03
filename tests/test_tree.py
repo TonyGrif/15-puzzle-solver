@@ -92,7 +92,9 @@ class TestTree:
         assert tree.root is not None
         assert tree.expand_count == 0
         assert tree.root.get_current_string() not in tree.explored_set
+
         assert len(tree.frontier) == 1
+        assert tree.frontier[0] is tree.root
         assert len(tree.explored_set) == 0
 
         goal_board = Board(
