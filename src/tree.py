@@ -23,36 +23,26 @@ class Node:
         children (List[Node]): A list of nodes created from this node.
     """
 
-    def __init__(self, state: Board or "Node", action: str = None) -> None:
-        """Default constructor for a Node object.
+    def __init__(self, state: Board, action: str = None, parent: "Node" = None) -> None:
+        """Default constructor for a Node object. This is intended to be used
+        for the creation of root nodes; all children nodes should ideally be
+        created through public methods.
 
         Parameters:
-            input_state (Board or Node): The state this node will hold. The
-                root node should be initialized using the Board;
-                all other nodes should be initialized by passing
-                in the parent node.
+            input_state (Board or Node): The state this node will hold.
             action (str): The valid move of this object. This move will
-                be applied to a deep copy of the parent's current
+                be applied to a deep copy of the state's current
                 board and stored in this nodes current board.
+            parent (Node): The parent node for this Node.
         """
-        self.depth_count = 0
+        self._parent_node = None if parent is None else parent
+        self._current_board = deepcopy(state)
+
+        self._action_used = action
+        self.depth_count = 0 if parent is None else parent.depth_count
+        self._apply_action(action)
+
         self.children = []
-
-        if isinstance(state, Board):
-            self._parent_node = None
-            self._current_board = state
-        elif isinstance(state, Node):
-            self._parent_node = state
-            self._current_board = deepcopy(state.current_board)
-
-            self.depth_count = state.depth_count
-
-
-        if action is not None and action in self.get_moves():
-            self._action_used = action
-            self._apply_action(action)
-        else:
-            self._action_used = None
 
     @property
     def parent_node(self) -> "Node":
@@ -123,8 +113,7 @@ class Node:
         Returns:
             A newly created node.
         """
-        new_node = Node(self, action)
-        new_node._apply_action(action)
+        new_node = Node(self.current_board, action, self)
         self.children.append(new_node)
         return new_node
 
@@ -137,9 +126,9 @@ class Node:
             action (str): The valid action to apply.
         """
         if self.current_board.move(action) is not False:
-            self.increment_depth()
+            self._increment_depth()
 
-    def increment_depth(self) -> None:
+    def _increment_depth(self) -> None:
         """Increment the depth counter by one upon successful action."""
         self.depth_count += 1
 
@@ -226,7 +215,7 @@ class Tree:
             node (Node): The node to expand.
         """
         for moves in node.get_moves():
-            new_node = Node(node, moves)
+            new_node = Node(node.current_board, moves, node)
             self._frontier.append(new_node)
             logging.debug(
                 "New node added to frontier: %s", new_node.get_current_array().tolist()
