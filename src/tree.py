@@ -35,7 +35,6 @@ class Node:
                 be applied to a deep copy of the parent's current
                 board and stored in this nodes current board.
         """
-        self.action_used = None
         self.depth_count = 0
         self.children = []
 
@@ -48,11 +47,12 @@ class Node:
 
             self.depth_count = state.depth_count
 
-            # Linking this Node to the parent
-            state.children.append(self)
 
-        if action is not None:
-            self.apply_action(action)
+        if action is not None and action in self.get_moves():
+            self._action_used = action
+            self._apply_action(action)
+        else:
+            self._action_used = None
 
     @property
     def parent_node(self) -> "Node":
@@ -71,6 +71,16 @@ class Node:
             The Board object this Node tracks.
         """
         return self._current_board
+
+    @property
+    def action_used(self) -> str:
+        """Return the string representation of the move used to achieve
+        the current state from the parent.
+
+        Returns:
+            String representation of a move.
+        """
+        return self._action_used
 
     def get_parent_array(self) -> np.ndarray:
         """Return the parent state of this array.
@@ -104,7 +114,21 @@ class Node:
         """
         return self.current_board.get_valid_moves()
 
-    def apply_action(self, action: str) -> None:
+    def move_board(self, action: str) -> "Node":
+        """Make a new Node by moving the current state.
+
+        Parameters:
+            action (str): The valid action to apply.
+
+        Returns:
+            A newly created node.
+        """
+        new_node = Node(self, action)
+        new_node._apply_action(action)
+        self.children.append(new_node)
+        return new_node
+
+    def _apply_action(self, action: str) -> None:
         """Apply a valid move to the current state of this node. Invalid
         moves will be discarded. This function also presumes this
         node's current_state variable is a deep copy.
@@ -113,7 +137,6 @@ class Node:
             action (str): The valid action to apply.
         """
         if self.current_board.move(action) is not False:
-            self.action_used = action
             self.increment_depth()
 
     def increment_depth(self) -> None:
