@@ -132,13 +132,13 @@ class Tree:
         self.root = None
         self.expand_count = 0
         self.explored_set = set()
-        self.frontier = deque()
+        self._frontier = deque()
 
         if root.is_goal_state():
             raise AssertionError("Root is already in goal state.")
 
         self.root = root
-        self.frontier.append(self.root)
+        self._frontier.append(self.root)
         logging.info("Creating new tree with %s", root.get_current_array().tolist())
 
     def expand(self) -> Node:
@@ -151,26 +151,34 @@ class Tree:
         Returns:
             Return the Node if a goal state has been reached; None otherwise.
         """
-        if len(self.frontier) == 0:
+        if self.get_length_of_frontier() == 0:
             raise IndexError("No solution found.")
-        node = self.frontier.popleft()
+        node = self._frontier.popleft()
 
         if node.is_goal_state() is True:
             logging.info("Goal state found %s", node.get_current_string())
             return node
 
-        if self.add_to_set(node) is True:
+        if self._add_to_set(node) is True:
             logging.info(
                 "Expanding node %s with depth %s",
                 node.get_current_array().tolist(),
                 node.depth_count,
             )
-            self.add_moves_to_frontier(node)
+            self._add_moves_to_frontier(node)
 
-        self.increment_expand_counter()
+        self._increment_expand_counter()
         return None
 
-    def add_moves_to_frontier(self, node: Node) -> None:
+    def get_length_of_frontier(self) -> int:
+        """Get the length of the current frontier.
+
+        Returns:
+            Integer length of the frontier.
+        """
+        return len(self._frontier)
+
+    def _add_moves_to_frontier(self, node: Node) -> None:
         """Add new unexplored nodes to the frontier.
 
         Parameters:
@@ -178,12 +186,12 @@ class Tree:
         """
         for moves in node.get_moves():
             new_node = Node(node, moves)
-            self.frontier.append(new_node)
+            self._frontier.append(new_node)
             logging.debug(
                 "New node added to frontier: %s", new_node.get_current_array().tolist()
             )
 
-    def add_to_set(self, state: Node) -> bool:
+    def _add_to_set(self, state: Node) -> bool:
         """Add the node's state to the set if it has not already been seen.
 
         Parameters:
@@ -198,6 +206,6 @@ class Tree:
         self.explored_set.add(state.get_current_string())
         return True
 
-    def increment_expand_counter(self) -> None:
+    def _increment_expand_counter(self) -> None:
         """Increment the number of expanded nodes by one."""
         self.expand_count += 1

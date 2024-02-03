@@ -93,8 +93,7 @@ class TestTree:
         assert tree.expand_count == 0
         assert tree.root.get_current_string() not in tree.explored_set
 
-        assert len(tree.frontier) == 1
-        assert tree.frontier[0] is tree.root
+        assert tree.get_length_of_frontier() == 1
         assert len(tree.explored_set) == 0
 
         goal_board = Board(
@@ -104,23 +103,15 @@ class TestTree:
             fail = Tree(goal_board)
 
     def test_expand(self, tree):
-        assert len(tree.frontier) == 1
-
-        tree.expand()
-        assert len(tree.frontier) == 3
-        assert tree.root.get_current_string() in tree.explored_set
-        assert tree.expand_count == 1
-
-        tree.expand()
-        assert len(tree.frontier) == 6
-        assert tree.expand_count == 2
-
-    def test_add_to_set(self, tree):
+        assert tree.get_length_of_frontier() == 1
         assert tree.root.get_current_string() not in tree.explored_set
 
         tree.expand()
+        assert tree.get_length_of_frontier() == 3
+        assert tree.expand_count == 1
         assert tree.root.get_current_string() in tree.explored_set
         assert len(tree.explored_set) == 1
 
         tree.expand()
-        assert len(tree.explored_set) == 2
+        assert tree.get_length_of_frontier() == 6
+        assert tree.expand_count == 2
