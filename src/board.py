@@ -23,11 +23,11 @@ class Board:
             space represented by 0 and will not be validated within
             this class.
         """
-        self.current_state = np.array(
+        self._current_state = np.array(
             [matrix_list[x : x + 4] for x in range(0, len(matrix_list), 4)]
         )
 
-        self.goal_state = np.array(
+        self._goal_state = np.array(
             [
                 ["1", "2", "3", "4"],
                 ["5", "6", "7", "8"],
@@ -35,6 +35,24 @@ class Board:
                 ["13", "14", "15", "_"],
             ]
         )
+
+    @property
+    def current_state(self):
+        """Get the current state of this board.
+
+        Returns:
+            Returns the numpy array representation of this board.
+        """
+        return self._current_state
+
+    @property
+    def goal_state(self):
+        """Get the goal state of this board.
+
+        Returns:
+            Returns the numpy array representation of the goal board.
+        """
+        return self._goal_state
 
     def __str__(self) -> str:
         """Return a string representation of the current state.
