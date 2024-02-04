@@ -67,7 +67,15 @@ def main():
     while len(tree.goal_states) == 0:
         tree.expand()
 
-    print(tree.goal_states[0])
+    print(
+        f"""
+        Search Routine: {args.search_routine}\n
+        TBE Moves: {tree.goal_states[0].action_used}\n
+        Expanded Node Count: {tree.expand_count}\n
+        TBW Time Taken: \n
+        TBW Memory Used: \n
+    """
+    )
 
 
 if __name__ == "__main__":
