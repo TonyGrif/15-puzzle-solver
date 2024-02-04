@@ -64,8 +64,10 @@ def main():
     game_board = Board(matrix_list)
     tree = Tree(Node(game_board))
 
-    while tree.expand() is None:
+    while len(tree.goal_states) == 0:
         tree.expand()
+
+    print(tree.goal_states[0])
 
 
 if __name__ == "__main__":

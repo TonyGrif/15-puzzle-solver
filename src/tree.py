@@ -4,7 +4,7 @@
 import logging
 from collections import deque
 from copy import deepcopy
-from typing import Deque, Set, Tuple
+from typing import Deque, List, Set, Tuple
 
 import numpy as np
 
@@ -151,6 +151,7 @@ class Tree:
         explored_set (List[str]): The collection of states that have already been
             seen by this tree.
         frontier (deque[Node]): The collection of all unexpanded nodes.
+        goal_states(List[Node]): The list of goal state nodes found.
     """
 
     def __init__(self, root: Node) -> None:
@@ -163,6 +164,7 @@ class Tree:
         self.expand_count = 0
         self._explored_set = set()
         self._frontier = deque()
+        self._goal_states = list()
 
         if root.is_goal_state():
             raise AssertionError("Root is already in goal state.")
@@ -197,7 +199,16 @@ class Tree:
         """
         return self._frontier
 
-    def expand(self) -> Node:
+    @property
+    def goal_states(self) -> List[Node]:
+        """Return the collection of goal states this tree has.
+
+        Returns:
+            List of Nodes that are in goal state.
+        """
+        return self._goal_states
+
+    def expand(self) -> None:
         """Expand the current node to create new nodes based on valid moves.
         The node selected will be pulled from the frontier.
 
@@ -212,19 +223,13 @@ class Tree:
         node = self._frontier.popleft()
 
         if node.is_goal_state() is True:
-            logging.info("Goal state found %s", node.get_current_string())
-            return node
+            self.goal_states.append(node)
+            return
 
         if self._add_to_set(node) is True:
-            logging.info(
-                "Expanding node %s with depth %s",
-                node.get_current_array().tolist(),
-                node.depth_count,
-            )
             self._add_moves_to_frontier(node)
 
         self._increment_expand_counter()
-        return None
 
     def _add_moves_to_frontier(self, node: Node) -> None:
         """Add new unexplored nodes to the frontier.
@@ -233,7 +238,7 @@ class Tree:
             node (Node): The node to expand.
         """
         for moves in node.get_moves():
-            new_node = Node(node.current_board, moves, node)
+            new_node = node.move_board(moves)
             self._frontier.append(new_node)
             logging.debug(
                 "New node added to frontier: %s", new_node.get_current_array().tolist()
