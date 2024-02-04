@@ -15,7 +15,7 @@ def root_node():
 
 @pytest.fixture
 def tree(root_node):
-    return Tree(root_node)
+    return Tree(root_node, "bfs")
 
 
 class TestNode:
@@ -99,7 +99,7 @@ class TestTree:
             convert_string_to_list("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 _")
         )
         with pytest.raises(Exception) as e:
-            fail = Tree(goal_board)
+            fail = Tree(goal_board, "dfs")
 
     def test_expand(self, tree):
         assert len(tree.frontier) == 1

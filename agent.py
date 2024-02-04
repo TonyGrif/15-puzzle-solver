@@ -65,7 +65,7 @@ def main():
 
     logging.debug("Running %s routine on %s", args.search_routine, matrix_list)
     game_board = Board(matrix_list)
-    tree = Tree(Node(game_board))
+    tree = Tree(Node(game_board), args.search_routine)
 
     start = time.perf_counter()
     start_mem = psutil.Process().memory_info().rss
@@ -76,7 +76,7 @@ def main():
 
     print(
         f"""
-        Search Routine: {args.search_routine}\n
+        Search Routine: {tree.routine}\n
         Moves: {tree.goal_states[0].action_used}\n
         Expanded Node Count: {tree.expand_count}\n
         Time Taken: {round((end - start) * 1000)} ms\n
