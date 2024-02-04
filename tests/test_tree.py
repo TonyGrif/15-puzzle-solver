@@ -58,6 +58,7 @@ class TestNode:
         child_node = root_node.move_board("Up")
         assert child_node.parent_node is root_node
         assert child_node.current_board is not None
+        assert root_node.children[0] is child_node
 
         np.testing.assert_raises(
             AssertionError,
@@ -89,7 +90,10 @@ class TestTree:
         assert tree.root.get_current_string() not in tree.explored_set
 
         assert len(tree.frontier) == 1
+        assert tree.frontier[0] is tree.root
         assert len(tree.explored_set) == 0
+
+        assert len(tree.goal_states) == 0
 
         goal_board = Board(
             convert_string_to_list("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 _")
@@ -103,6 +107,8 @@ class TestTree:
 
         tree.expand()
         assert len(tree.frontier) == 3
+        assert tree.frontier[0] in tree.root.children
+        assert tree.frontier[0].parent_node is tree.root
         assert tree.expand_count == 1
         assert tree.root.get_current_string() in tree.explored_set
         assert len(tree.explored_set) == 1
@@ -110,3 +116,7 @@ class TestTree:
         tree.expand()
         assert len(tree.frontier) == 6
         assert tree.expand_count == 2
+
+        while len(tree.goal_states) == 0:
+            tree.expand()
+        assert len(tree.goal_states) == 1
