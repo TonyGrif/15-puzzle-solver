@@ -154,19 +154,26 @@ class Tree:
             seen by this tree.
         frontier (deque[Node]): The collection of all unexpanded nodes.
         goal_states(List[Node]): The list of goal state nodes found.
+        routine (str): The routine used for this search tree.
     """
 
-    def __init__(self, root: Node) -> None:
+    def __init__(self, root: Node, routine: str) -> None:
         """Default constructor for a Tree object.
 
         Parameters:
             root (Node): The root node of this tree.
+            routine (str): The routine used for this search tree.
         """
         self._root = root
         self.expand_count = 0
         self._explored_set = set()
         self._frontier = deque()
         self._goal_states = []
+
+        if routine not in ("bfs", "dfs"):
+            raise AssertionError("Routine requested has not been implemented")
+
+        self._routine = routine
 
         if root.is_goal_state():
             raise AssertionError("Root is already in goal state.")
@@ -210,6 +217,15 @@ class Tree:
         """
         return self._goal_states
 
+    @property
+    def routine(self) -> str:
+        """Return the search routine used.
+
+        Returns:
+            String representation of the routine used.
+        """
+        return self._routine
+
     def expand(self) -> None:
         """Expand the current node to create new nodes based on valid moves.
         The node selected will be pulled from the frontier.
@@ -222,9 +238,15 @@ class Tree:
         """
         if len(self.frontier) == 0:
             raise IndexError("No solution found.")
-        node = self._frontier.popleft()
+
+        node = None
+        if self.routine == "bfs":
+            node = self._frontier.popleft()
+        elif self.routine == "dfs":
+            node = self._frontier.pop()
 
         if node.is_goal_state() is True:
+            logging.info("New goal state found.")
             self.goal_states.append(node)
             return
 
@@ -242,9 +264,7 @@ class Tree:
         for moves in node.get_moves():
             new_node = node.move_board(moves)
             self._frontier.append(new_node)
-            logging.debug(
-                "New node added to frontier: %s", new_node.get_current_array().tolist()
-            )
+            logging.debug("New node added to frontier with depth %s", node.depth_count)
 
     def _add_to_set(self, state: Node) -> bool:
         """Add the node's state to the set if it has not already been seen.
