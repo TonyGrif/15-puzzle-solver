@@ -4,6 +4,7 @@
 
 import argparse
 import logging
+import time
 
 from src.board import Board
 from src.tree import Node, Tree
@@ -64,15 +65,17 @@ def main():
     game_board = Board(matrix_list)
     tree = Tree(Node(game_board))
 
+    start = time.perf_counter()
     while len(tree.goal_states) == 0:
         tree.expand()
+    end = time.perf_counter()
 
     print(
         f"""
         Search Routine: {args.search_routine}\n
         Moves: {tree.goal_states[0].action_used}\n
         Expanded Node Count: {tree.expand_count}\n
-        TBW Time Taken: \n
+        Time Taken: {round((end - start) * 1000)} ms\n
         TBW Memory Used: \n
     """
     )
