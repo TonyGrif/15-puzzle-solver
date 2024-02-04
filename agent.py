@@ -6,6 +6,8 @@ import argparse
 import logging
 import time
 
+import psutil
+
 from src.board import Board
 from src.tree import Node, Tree
 from src.utils import convert_string_to_list, validate_list
@@ -66,9 +68,11 @@ def main():
     tree = Tree(Node(game_board))
 
     start = time.perf_counter()
+    start_mem = psutil.Process().memory_info().rss
     while len(tree.goal_states) == 0:
         tree.expand()
     end = time.perf_counter()
+    end_mem = psutil.Process().memory_info().rss
 
     print(
         f"""
@@ -76,7 +80,7 @@ def main():
         Moves: {tree.goal_states[0].action_used}\n
         Expanded Node Count: {tree.expand_count}\n
         Time Taken: {round((end - start) * 1000)} ms\n
-        TBW Memory Used: \n
+        Memory Used: {((end_mem - start_mem) / 1000):.2f} kb\n
     """
     )
 
