@@ -18,7 +18,7 @@ class Node:
     Variables:
         parent_node (Node): The parent node for this node.
         current_board (Board): The state this node holds.
-        action_used (str): The action used on the parent to reach this state.
+        action_used (list[str]): The actions used on the parent to reach this state.
         depth_count (int): The amount of moves that have led to this node.
         children (List[Node]): A list of nodes created from this node.
     """
@@ -29,7 +29,7 @@ class Node:
         created through public methods.
 
         Parameters:
-            input_state (Board or Node): The state this node will hold.
+            input_state (Board): The state this node will hold.
             action (str): The valid move of this object. This move will
                 be applied to a deep copy of the state's current
                 board and stored in this nodes current board.
@@ -38,7 +38,9 @@ class Node:
         self._parent_node = None if parent is None else parent
         self._current_board = deepcopy(state)
 
-        self._action_used = action
+        self._action_used = [] if parent is None else deepcopy(parent.action_used)
+        if action is not None:
+            self.action_used.append(action)
         self.depth_count = 0 if parent is None else parent.depth_count
         self._apply_action(action)
 
@@ -63,12 +65,12 @@ class Node:
         return self._current_board
 
     @property
-    def action_used(self) -> str:
+    def action_used(self) -> List[str]:
         """Return the string representation of the move used to achieve
         the current state from the parent.
 
         Returns:
-            String representation of a move.
+            List of string representations of a move.
         """
         return self._action_used
 
@@ -164,7 +166,7 @@ class Tree:
         self.expand_count = 0
         self._explored_set = set()
         self._frontier = deque()
-        self._goal_states = list()
+        self._goal_states = []
 
         if root.is_goal_state():
             raise AssertionError("Root is already in goal state.")

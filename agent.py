@@ -70,7 +70,7 @@ def main():
     print(
         f"""
         Search Routine: {args.search_routine}\n
-        TBE Moves: {tree.goal_states[0].action_used}\n
+        Moves: {tree.goal_states[0].action_used}\n
         Expanded Node Count: {tree.expand_count}\n
         TBW Time Taken: \n
         TBW Memory Used: \n

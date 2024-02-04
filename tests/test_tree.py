@@ -22,7 +22,7 @@ class TestNode:
     def test_init(self, root_node):
         assert root_node.parent_node is None
         assert root_node.current_board is not None
-        assert root_node.action_used is None
+        assert root_node.action_used == []
         assert root_node.depth_count == 0
         assert root_node.children == []
 
@@ -34,7 +34,7 @@ class TestNode:
         np.testing.assert_array_equal(
             root_node.get_current_array(), child_node.get_parent_array()
         )
-        assert child_node.action_used is "Left"
+        assert child_node.action_used[0] == "Left"
         assert child_node.depth_count == 1
 
         assert child_node.children == []
@@ -68,15 +68,15 @@ class TestNode:
         )
 
         assert child_node.get_current_array().tolist()[0] == ["1", "7", "2", "4"]
-        assert child_node.action_used == "Up"
+        assert child_node.action_used[0] == "Up"
         assert child_node.depth_count == 1
 
         grandchild_node = child_node.move_board("Left")
-        assert grandchild_node.action_used == "Left"
+        assert grandchild_node.action_used[1] == "Left"
         assert grandchild_node.depth_count == 2
 
         child_node = root_node.move_board("Down")
-        assert child_node.action_used is "Down"
+        assert child_node.action_used[0] == "Down"
         np.testing.assert_array_equal(
             child_node.get_current_array(), child_node.get_parent_array()
         )
