@@ -89,8 +89,7 @@ class TestTree:
         assert tree.expand_count == 0
         assert tree.root.get_current_string() not in tree.explored_set
 
-        assert len(tree.frontier) == 1
-        assert tree.frontier[0] is tree.root
+        assert tree.frontier.qsize() == 1
         assert len(tree.explored_set) == 0
 
         assert len(tree.goal_states) == 0
@@ -102,19 +101,17 @@ class TestTree:
             fail = Tree(goal_board, "dfs")
 
     def test_expand(self, tree):
-        assert len(tree.frontier) == 1
+        assert tree.frontier.qsize() == 1
         assert tree.root.get_current_string() not in tree.explored_set
 
         tree.expand()
-        assert len(tree.frontier) == 3
-        assert tree.frontier[0] in tree.root.children
-        assert tree.frontier[0].parent_node is tree.root
+        assert tree.frontier.qsize() == 3
         assert tree.expand_count == 1
         assert tree.root.get_current_string() in tree.explored_set
         assert len(tree.explored_set) == 1
 
         tree.expand()
-        assert len(tree.frontier) == 6
+        assert tree.frontier.qsize() == 6
         assert tree.expand_count == 2
 
         while len(tree.goal_states) == 0:

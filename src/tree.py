@@ -2,7 +2,7 @@
 """
 
 import logging
-from collections import deque
+from queue import LifoQueue, SimpleQueue
 from copy import deepcopy
 from typing import Deque, List, Set, Tuple
 
@@ -167,18 +167,21 @@ class Tree:
         self._root = root
         self.expand_count = 0
         self._explored_set = set()
-        self._frontier = deque()
         self._goal_states = []
 
         if routine not in ("bfs", "dfs"):
             raise AssertionError("Routine requested has not been implemented")
 
         self._routine = routine
+        if routine == "bfs":
+            self._frontier = SimpleQueue()
+        elif routine == "dfs":
+            self._frontier = LifoQueue()
 
         if root.is_goal_state():
             raise AssertionError("Root is already in goal state.")
 
-        self._frontier.append(self.root)
+        self._frontier.put(self.root)
         logging.info("Creating new tree with %s", root.get_current_array().tolist())
 
     @property
@@ -236,14 +239,11 @@ class Tree:
         Returns:
             Return the Node if a goal state has been reached; None otherwise.
         """
-        if len(self.frontier) == 0:
+        if self.frontier.qsize() == 0:
             raise IndexError("No solution found.")
 
         node = None
-        if self.routine == "bfs":
-            node = self._frontier.popleft()
-        elif self.routine == "dfs":
-            node = self._frontier.pop()
+        node = self.frontier.get()
 
         if node.is_goal_state() is True:
             logging.info("New goal state found.")
@@ -263,7 +263,7 @@ class Tree:
         """
         for moves in node.get_moves():
             new_node = node.move_board(moves)
-            self._frontier.append(new_node)
+            self._frontier.put(new_node)
             logging.debug("New node added to frontier with depth %s", node.depth_count)
 
     def _add_to_set(self, state: Node) -> bool:
