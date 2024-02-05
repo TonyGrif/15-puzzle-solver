@@ -250,7 +250,7 @@ class Tree:
             self.goal_states.append(node)
             return
 
-        if self._add_to_set(node) is True:
+        if self._add_to_set(node) is True and node.depth_count <= 16:
             self._add_moves_to_frontier(node)
 
         self._increment_expand_counter()
