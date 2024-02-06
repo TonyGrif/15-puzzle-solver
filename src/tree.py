@@ -2,8 +2,8 @@
 """
 
 import logging
-from queue import LifoQueue, SimpleQueue
 from copy import deepcopy
+from queue import LifoQueue, SimpleQueue
 from typing import Deque, List, Set, Tuple
 
 import numpy as np
@@ -141,6 +141,22 @@ class Node:
             True if this is the goal state, False otherwise.
         """
         return self.current_board.is_goal_state()
+
+    def calculate_heuristic(self) -> int:
+        """Calculate the heuristic value of this state.
+
+        Returns:
+            Integer representing the number of misplaced titles on the current
+            board compared to the goal state.
+        """
+        goal = self.current_board.goal_state
+        counter = 0
+        # TODO: Could probably make this better
+        for row in range(4):
+            for col in range(4):
+                if self.get_current_array()[row][col] != goal[row][col]:
+                    counter += 1
+        return counter
 
 
 class Tree:
