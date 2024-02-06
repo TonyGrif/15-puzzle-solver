@@ -16,6 +16,23 @@ same as informed search even with the extra expansions.
 ## Screenshot
 
 # Depth-First Search
+For depth-first search, I utilized a LIFO queue (stack) for the frontier.
+This expanded all the nodes of a certain path before going back a node and
+expanding it. Without a bound, this program ran until their was no more memory
+left to allocate, still with no solution. To combat this, I placed a bound of
+16 on the depth. This was selected because there are `16!` possible states for
+the board to be in and this given depth-first search plenty of nodes to
+expand. The expansion takes place in the following order: Up, Down, Left,
+Right. Given this expansion and bounding, this routine expands a massive 6503
+nodes and takes up 266 milliseconds. The memory requirement to run this
+routine is 8388.61 kb.
+
+If I were to limit the depth counter to 7 (what we know to be the optimal
+depth), the expansion would only use 364 nodes, 17 milliseconds, and
+262.14 kb. With this foresight into the optimal depth, the depth-first search
+would then outperform breadth-first search in every metric (while using
+the same steps) by limiting the number of "wrong" steps the agent can make
+down the "incorrect" path.
 
 ## Screenshot
 
