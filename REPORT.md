@@ -3,11 +3,19 @@
 ### CS 480, Spring 2024
 ### February 6, 2024
 
-# Breadth First Search
+# Breadth-First Search
+For breadth-first search, I utilized a standard queue for the frontier.
+This expanded all nodes of a common depth first before expanding the next level
+of depth. This was moderately efficient, outperforming the depth-first
+search but falling well behind informed search. The expansion takes place
+in the following order: Up, Down, Left, Right. Given this expansion,
+this routine expands 708 nodes in approximately 48 milliseconds. The
+memory requirement for this routine is 1441.79 kb. The move output is the
+same as informed search even with the extra expansions.
 
 ## Screenshot
 
-# Depth First Search
+# Depth-First Search
 
 ## Screenshot
 
