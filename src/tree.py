@@ -3,7 +3,7 @@
 
 import logging
 from copy import deepcopy
-from queue import LifoQueue, SimpleQueue
+from queue import LifoQueue, PriorityQueue, SimpleQueue
 from typing import Deque, List, Set, Tuple
 
 import numpy as np
@@ -45,6 +45,22 @@ class Node:
         self._apply_action(action)
 
         self.children = []
+
+    def __lt__(self, other: "Node") -> bool:
+        """Compare two Node's heuristic value.
+
+        Returns:
+            True if left Node is less than; False otherwise.
+        """
+        return self.calculate_heuristic() < other.calculate_heuristic()
+
+    def __eq__(self, other: "Node") -> bool:
+        """Compare two Node's heurisitic value.
+
+        Returns:
+            True if the values are equal; False otherwise.
+        """
+        return self.calculate_heuristic() == other.calculate_heuristic()
 
     @property
     def parent_node(self) -> "Node":
@@ -185,7 +201,7 @@ class Tree:
         self._explored_set = set()
         self._goal_states = []
 
-        if routine not in ("bfs", "dfs"):
+        if routine not in ("bfs", "dfs", "ish"):
             raise AssertionError("Routine requested has not been implemented")
 
         self._routine = routine
@@ -193,6 +209,8 @@ class Tree:
             self._frontier = SimpleQueue()
         elif routine == "dfs":
             self._frontier = LifoQueue()
+        elif routine == "ish":
+            self._frontier = PriorityQueue()
 
         if root.is_goal_state():
             raise AssertionError("Root is already in goal state.")
@@ -261,6 +279,10 @@ class Tree:
         node = None
         node = self.frontier.get()
 
+        if isinstance(node, tuple):
+            node = node[1]
+            logging.debug("Node: %s", node)
+
         if node.is_goal_state() is True:
             logging.info("New goal state found.")
             self.goal_states.append(node)
@@ -279,6 +301,10 @@ class Tree:
         """
         for moves in node.get_moves():
             new_node = node.move_board(moves)
+
+            if self.routine == "ish":
+                self._frontier.put((new_node.calculate_heuristic(), new_node))
+                continue
             self._frontier.put(new_node)
             logging.debug("New node added to frontier with depth %s", node.depth_count)
 
