@@ -15,5 +15,4 @@ To run user-game, use `./play.py [starting state]` where the starting state must
 The user will be prompted for a move input that must be input with the same capitalization as the prompt, although the
 `''` are unneeded.
 
-## Sample Execution
-
+## [Report](report/REPORT.md)
