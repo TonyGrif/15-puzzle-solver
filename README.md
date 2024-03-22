@@ -4,8 +4,8 @@ Solves a 15-puzzle problem by utilizing BFS, DFS, and Informed Search using Heur
 ## Requirements
 * [Python 3.9+](https://www.python.org/)
 
-All further requirements can be installed using [Pipenv](https://pipenv.pypa.io/en/latest/) (pipenv install)
-or through pip (`pip install -r requirements.txt`).
+All further requirements can be installed using [Poetry]("https://python-poetry.org/")
+(poetry install).
 
 ## Running Instructions
 To run the agent program, use `./agent.py [routine] [starting state]` where routine must be either `bfs`, `dfs`, or `ish`.
