@@ -67,7 +67,7 @@ class TestNode:
             child_node.get_parent_array(),
         )
 
-        assert child_node.get_current_array().tolist()[0] == ["1", "7", "2", "4"]
+        assert child_node.get_current_array()[0] == ["1", "7", "2", "4"]
         assert child_node.action_used[0] == "Up"
         assert child_node.depth_count == 1
 
