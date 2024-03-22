@@ -2,16 +2,14 @@
 
 from typing import List, Tuple
 
-import numpy as np
-
 
 class Board:
     """Class utilized for storing board state data and defining
     the actions that can be performed on the board.
 
     Variables:
-        current_state (np.ndarray): The current state of this game.
-        goal_state (np.ndarray): The end goal to reach for this game.
+        current_state (List[List[str]]): The current state of this game.
+        goal_state (List[List[str]]): The end goal to reach for this game.
     """
 
     def __init__(self, matrix_list: List[str]) -> None:
@@ -19,38 +17,36 @@ class Board:
 
         Parameters:
             matrix_list (List[str]): Single list containing the board data.
-            The data is expected to contain the numbers 0-15 with a blank
-            space represented by 0 and will not be validated within
+            The data is expected to contain the numbers 1-15 with a blank
+            space represented by "_" and will not be validated within
             this class.
         """
-        self._current_state = np.array(
-            [matrix_list[x : x + 4] for x in range(0, len(matrix_list), 4)]
-        )
+        self._current_state = [
+            matrix_list[x : x + 4] for x in range(0, len(matrix_list), 4)
+        ]
 
-        self._goal_state = np.array(
-            [
-                ["1", "2", "3", "4"],
-                ["5", "6", "7", "8"],
-                ["9", "10", "11", "12"],
-                ["13", "14", "15", "_"],
-            ]
-        )
+        self._goal_state = [
+            ["1", "2", "3", "4"],
+            ["5", "6", "7", "8"],
+            ["9", "10", "11", "12"],
+            ["13", "14", "15", "_"],
+        ]
 
     @property
-    def current_state(self):
+    def current_state(self) -> List[List[str]]:
         """Get the current state of this board.
 
         Returns:
-            Returns the numpy array representation of this board.
+            Returns the 2d array representation of this board.
         """
         return self._current_state
 
     @property
-    def goal_state(self):
+    def goal_state(self) -> List[List[str]]:
         """Get the goal state of this board.
 
         Returns:
-            Returns the numpy array representation of the goal board.
+            Returns the 2d array representation of the goal board.
         """
         return self._goal_state
 
@@ -61,7 +57,7 @@ class Board:
             String representation of the current state.
         """
         string = ""
-        for rows in self.current_state.tolist():
+        for rows in self.current_state:
             for elem in rows:
                 string += str(elem) + " "
         return string
@@ -151,13 +147,19 @@ class Board:
             True if the current state is equal to the goal state,
             False otherwise.
         """
-        return np.array_equal(self.current_state, self.goal_state)
+        for i, row in enumerate(self.current_state):
+            for j, elem in enumerate(row):
+                if elem != self.goal_state[i][j]:
+                    return False
+        return True
 
-    def _get_blank_spot(self) -> Tuple[int]:
+    def _get_blank_spot(self) -> Tuple[int, int]:
         """Get the location of the blank space.
 
         Returns:
             Two-dimensional tuple containing the indices of the blank.
         """
-        row, col = np.where(self.current_state == "_")
-        return (row[0], col[0])
+        for i, row in enumerate(self.current_state):
+            for j, elem in enumerate(row):
+                if elem == "_":
+                    return (i, j)

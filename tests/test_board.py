@@ -1,6 +1,5 @@
 from copy import deepcopy
 
-import numpy as np
 import pytest
 
 from src.board import Board
@@ -16,53 +15,46 @@ def board():
 class TestBoard:
     def test_board_init(self, board):
         assert board.current_state is not None
-        assert np.shape(board.current_state) == (4, 4)
+        assert len(board.current_state) == 4
+        assert len([row[1] for row in board.current_state]) == 4
 
-        assert np.shape(board.goal_state) == (4, 4)
+        assert len(board.goal_state) == 4
+        assert len([row[1] for row in board.goal_state]) == 4
 
-        np.testing.assert_raises(
-            AssertionError,
-            np.testing.assert_array_equal,
-            board.current_state,
-            board.goal_state,
-        )
+        current = tuple(tuple(row) for row in board.current_state)
+        goal = tuple(tuple(row) for row in board.goal_state)
+
+        assert current != goal
 
     def test_strings(self, board):
         string = str(board)
-
-        for row in board.current_state:
-            for elem in row:
-                assert elem in string
-
         fstring = board.fstring()
 
         for row in board.current_state:
             for elem in row:
-                assert elem in fstring
+                assert elem in string, "Normal string error"
+                assert elem in fstring, "Formatted string error"
 
     def test_move(self, board):
         copy_board = deepcopy(board)
         assert board.move("Down") is False
 
         assert board.move("Left") is True
-        np.testing.assert_raises(
-            AssertionError,
-            np.testing.assert_array_equal,
-            board.current_state,
-            board.goal_state,
-        )
-        assert board.current_state.tolist()[0] == ["_", "1", "2", "4"]
+        current = tuple(tuple(row) for row in board.current_state)
+        goal = tuple(tuple(row) for row in board.goal_state)
+        assert current != goal
+
+        assert board.current_state[0] == ["_", "1", "2", "4"]
         assert board.get_valid_moves() == ("Up", "Right")
 
         assert copy_board.move("Up") is True
-        np.testing.assert_raises(
-            AssertionError,
-            np.testing.assert_array_equal,
-            board.current_state,
-            copy_board.current_state,
-        )
-        assert copy_board.current_state.tolist()[0] == ["1", "7", "2", "4"]
-        assert copy_board.current_state.tolist()[1] == ["5", "_", "3", "8"]
+
+        current = tuple(tuple(row) for row in board.current_state)
+        copy = tuple(tuple(row) for row in copy_board.current_state)
+        assert current != copy
+
+        assert copy_board.current_state[0] == ["1", "7", "2", "4"]
+        assert copy_board.current_state[1] == ["5", "_", "3", "8"]
 
     def test_get_valid_moves(self, board):
         assert board.get_valid_moves() == ("Up", "Left", "Right")
@@ -77,14 +69,9 @@ class TestBoard:
 
     def test_is_goal_state(self, board):
         assert not board.is_goal_state()
+        moves = ["Right", "Down", "Up", "Left", "Up", "Up", "Right", "Right"]
 
-        board.move("Right")
-        board.move("Down")
-        board.move("Up")
-        board.move("Left")
-        board.move("Up")
-        board.move("Up")
-        board.move("Right")
-        board.move("Right")
+        for move in moves:
+            board.move(move)
 
         assert board.is_goal_state()
