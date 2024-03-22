@@ -51,22 +51,10 @@ class Board:
         return self._goal_state
 
     def __str__(self) -> str:
-        """Return a string representation of the current state.
+        """Return a formatted string representation of the current state.
 
         Returns:
-            String representation of the current state.
-        """
-        string = ""
-        for rows in self.current_state:
-            for elem in rows:
-                string += str(elem) + " "
-        return string
-
-    def fstring(self) -> str:
-        """Return the state of this board as a formatted string.
-
-        Returns:
-            String representation of the current board containing borders.
+            String representation of the current state containing boarders.
         """
         string = "|" + ("-" * 16) + "|\n"
 

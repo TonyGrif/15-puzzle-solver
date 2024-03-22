@@ -28,12 +28,10 @@ class TestBoard:
 
     def test_strings(self, board):
         string = str(board)
-        fstring = board.fstring()
 
         for row in board.current_state:
             for elem in row:
-                assert elem in string, "Normal string error"
-                assert elem in fstring, "Formatted string error"
+                assert elem in string
 
     def test_move(self, board):
         copy_board = deepcopy(board)
