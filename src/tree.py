@@ -90,7 +90,7 @@ class Node:
         """
         return self._action_used
 
-    def get_parent_array(self) -> np.ndarray:
+    def get_parent_array(self) -> List[List[str]]:
         """Return the parent state of this array.
 
         Returns:
@@ -98,7 +98,7 @@ class Node:
         """
         return self.parent_node.current_board.current_state
 
-    def get_current_array(self) -> np.ndarray:
+    def get_current_array(self) -> List[List[str]]:
         """Return the current state of this array.
 
         Returns:
@@ -216,7 +216,7 @@ class Tree:
             raise AssertionError("Root is already in goal state.")
 
         self._frontier.put(self.root)
-        logging.info("Creating new tree with %s", root.get_current_array().tolist())
+        logging.info("Creating new tree with %s", root.get_current_array())
 
     @property
     def root(self) -> Node:
