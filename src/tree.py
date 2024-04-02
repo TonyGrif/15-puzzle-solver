@@ -6,8 +6,6 @@ from copy import deepcopy
 from queue import LifoQueue, PriorityQueue, SimpleQueue
 from typing import Deque, List, Set, Tuple
 
-import numpy as np
-
 from src.board import Board
 
 

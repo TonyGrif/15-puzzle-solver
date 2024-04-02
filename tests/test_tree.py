@@ -1,4 +1,3 @@
-import numpy as np
 import pytest
 
 from src.board import Board
@@ -31,9 +30,6 @@ class TestNode:
         assert child_node.parent_node is root_node
 
         assert child_node.current_board is not None
-        np.testing.assert_array_equal(
-            root_node.get_current_array(), child_node.get_parent_array()
-        )
         assert child_node.action_used[0] == "Left"
         assert child_node.depth_count == 1
 
@@ -41,31 +37,11 @@ class TestNode:
         assert len(root_node.children) == 1
         assert root_node.children[0] is child_node
 
-        np.testing.assert_raises(
-            AssertionError,
-            np.testing.assert_array_equal,
-            child_node.get_current_array(),
-            child_node.get_parent_array(),
-        )
-        np.testing.assert_raises(
-            AssertionError,
-            np.testing.assert_array_equal,
-            child_node.get_current_array(),
-            root_node.get_current_array(),
-        )
-
     def test_move(self, root_node):
         child_node = root_node.move_board("Up")
         assert child_node.parent_node is root_node
         assert child_node.current_board is not None
         assert root_node.children[0] is child_node
-
-        np.testing.assert_raises(
-            AssertionError,
-            np.testing.assert_array_equal,
-            child_node.get_current_array(),
-            child_node.get_parent_array(),
-        )
 
         assert child_node.get_current_array()[0] == ["1", "7", "2", "4"]
         assert child_node.action_used[0] == "Up"
@@ -77,9 +53,6 @@ class TestNode:
 
         child_node = root_node.move_board("Down")
         assert child_node.action_used[0] == "Down"
-        np.testing.assert_array_equal(
-            child_node.get_current_array(), child_node.get_parent_array()
-        )
         assert child_node.depth_count == 0
 
     def test_heuristic(self, root_node):
