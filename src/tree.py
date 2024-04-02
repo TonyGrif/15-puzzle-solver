@@ -6,7 +6,7 @@ from copy import deepcopy
 from queue import LifoQueue, PriorityQueue, SimpleQueue
 from typing import Deque, List, Set, Tuple
 
-from src.board import Board
+from src.board import GOAL_STATE, Board
 
 
 class Node:
@@ -163,7 +163,7 @@ class Node:
             Integer representing the number of misplaced titles on the current
             board compared to the goal state.
         """
-        goal = self.current_board.goal_state
+        goal = GOAL_STATE
         counter = 0
         # TODO: Could probably make this better
         for row in range(4):

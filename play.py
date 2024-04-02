@@ -52,6 +52,7 @@ def main():
         validate_list(matrix_list)
     except AssertionError as ae:
         print(ae)
+        return -1
 
     game_board = Board(matrix_list)
 
