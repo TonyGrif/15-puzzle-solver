@@ -67,28 +67,33 @@ class Board:
         Returns:
             True if the move was successful, False otherwise.
         """
-        if move not in self.get_valid_moves():
+        # TODO: Remove this, will break Node and Tree currently
+        if move is None:
+            return False
+
+        move = move.lower()
+        if move not in [action.lower() for action in self.get_valid_moves()]:
             return False
 
         row, col = self.get_blank_spot()
 
-        if move == "Up":
+        if move == "up":
             self.current_state[row][col], self.current_state[row + 1][col] = (
                 self.current_state[row + 1][col],
                 self.current_state[row][col],
             )
-        if move == "Down":
+        if move == "down":
             self.current_state[row][col], self.current_state[row - 1][col] = (
                 self.current_state[row - 1][col],
                 self.current_state[row][col],
             )
 
-        if move == "Left":
+        if move == "left":
             self.current_state[row][col], self.current_state[row][col + 1] = (
                 self.current_state[row][col + 1],
                 self.current_state[row][col],
             )
-        if move == "Right":
+        if move == "right":
             self.current_state[row][col], self.current_state[row][col - 1] = (
                 self.current_state[row][col - 1],
                 self.current_state[row][col],
