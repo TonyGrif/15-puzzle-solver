@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import pytest
 
-from src.board import Board, GOAL_STATE
+from src.board import GOAL_STATE, Board
 from src.utils import convert_string_to_list
 
 
