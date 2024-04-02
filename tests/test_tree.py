@@ -58,10 +58,10 @@ class TestNode:
     def test_heuristic(self, root_node):
         assert root_node.calculate_heuristic() == 8
 
-        child = root_node.move_board("Right")
+        child = root_node.move_board("Left")
         assert child.calculate_heuristic() == 7
 
-        child = root_node.move_board("Left")
+        child = root_node.move_board("Right")
         assert child.calculate_heuristic() == 9
 
 

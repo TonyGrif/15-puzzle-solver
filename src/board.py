@@ -84,13 +84,13 @@ class Board:
             )
 
         if move == "Left":
-            self.current_state[row][col], self.current_state[row][col - 1] = (
-                self.current_state[row][col - 1],
+            self.current_state[row][col], self.current_state[row][col + 1] = (
+                self.current_state[row][col + 1],
                 self.current_state[row][col],
             )
         if move == "Right":
-            self.current_state[row][col], self.current_state[row][col + 1] = (
-                self.current_state[row][col + 1],
+            self.current_state[row][col], self.current_state[row][col - 1] = (
+                self.current_state[row][col - 1],
                 self.current_state[row][col],
             )
 
@@ -111,9 +111,9 @@ class Board:
         if row != 0:
             moves.append("Down")
 
-        if col != 0:
-            moves.append("Left")
         if col != 3:
+            moves.append("Left")
+        if col != 0:
             moves.append("Right")
 
         return tuple(moves)

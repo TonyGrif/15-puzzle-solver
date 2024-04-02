@@ -37,13 +37,13 @@ class TestBoard:
         copy_board = deepcopy(board)
         assert board.move("Down") is False
 
-        assert board.move("Left") is True
+        assert board.move("Right") is True
         current = tuple(tuple(row) for row in board.current_state)
         goal = tuple(tuple(row) for row in GOAL_STATE)
         assert current != goal
 
         assert board.current_state[0] == ["_", "1", "2", "4"]
-        assert board.get_valid_moves() == ("Up", "Right")
+        assert board.get_valid_moves() == ("Up", "Left")
 
         assert copy_board.move("Up") is True
 
@@ -63,11 +63,11 @@ class TestBoard:
 
         mlist = convert_string_to_list("1 2 4 5 7 3 8 9 6 11 12 13 10 14 15 _")
         corner_board = Board(mlist)
-        assert corner_board.get_valid_moves() == ("Down", "Left")
+        assert corner_board.get_valid_moves() == ("Down", "Right")
 
     def test_is_goal_state(self, board):
         assert not board.is_goal_state()
-        moves = ["Right", "Down", "Up", "Left", "Up", "Up", "Right", "Right"]
+        moves = ["Left", "Down", "Up", "Right", "Up", "Up", "Left", "Left"]
 
         for move in moves:
             board.move(move)
