@@ -1,6 +1,13 @@
-"""This module contains the Board class structure."""
+"""This module contains the Board class structure and the goal state to reach."""
 
 from typing import List, Tuple
+
+GOAL_STATE = [
+    ["1", "2", "3", "4"],
+    ["5", "6", "7", "8"],
+    ["9", "10", "11", "12"],
+    ["13", "14", "15", "_"],
+]
 
 
 class Board:
@@ -9,7 +16,6 @@ class Board:
 
     Variables:
         current_state (List[List[str]]): The current state of this game.
-        goal_state (List[List[str]]): The end goal to reach for this game.
     """
 
     def __init__(self, matrix_list: List[str]) -> None:
@@ -25,13 +31,6 @@ class Board:
             matrix_list[x : x + 4] for x in range(0, len(matrix_list), 4)
         ]
 
-        self._goal_state = [
-            ["1", "2", "3", "4"],
-            ["5", "6", "7", "8"],
-            ["9", "10", "11", "12"],
-            ["13", "14", "15", "_"],
-        ]
-
     @property
     def current_state(self) -> List[List[str]]:
         """Get the current state of this board.
@@ -40,15 +39,6 @@ class Board:
             Returns the 2d array representation of this board.
         """
         return self._current_state
-
-    @property
-    def goal_state(self) -> List[List[str]]:
-        """Get the goal state of this board.
-
-        Returns:
-            Returns the 2d array representation of the goal board.
-        """
-        return self._goal_state
 
     def __str__(self) -> str:
         """Return a formatted string representation of the current state.
@@ -137,7 +127,7 @@ class Board:
         """
         for i, row in enumerate(self.current_state):
             for j, elem in enumerate(row):
-                if elem != self.goal_state[i][j]:
+                if elem != GOAL_STATE[i][j]:
                     return False
         return True
 

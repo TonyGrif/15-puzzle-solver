@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import pytest
 
-from src.board import Board
+from src.board import Board, GOAL_STATE
 from src.utils import convert_string_to_list
 
 
@@ -18,11 +18,11 @@ class TestBoard:
         assert len(board.current_state) == 4
         assert len([row[1] for row in board.current_state]) == 4
 
-        assert len(board.goal_state) == 4
-        assert len([row[1] for row in board.goal_state]) == 4
+        assert len(GOAL_STATE) == 4
+        assert len([row[1] for row in GOAL_STATE]) == 4
 
         current = tuple(tuple(row) for row in board.current_state)
-        goal = tuple(tuple(row) for row in board.goal_state)
+        goal = tuple(tuple(row) for row in GOAL_STATE)
 
         assert current != goal
 
@@ -39,7 +39,7 @@ class TestBoard:
 
         assert board.move("Left") is True
         current = tuple(tuple(row) for row in board.current_state)
-        goal = tuple(tuple(row) for row in board.goal_state)
+        goal = tuple(tuple(row) for row in GOAL_STATE)
         assert current != goal
 
         assert board.current_state[0] == ["_", "1", "2", "4"]
