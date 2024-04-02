@@ -70,7 +70,7 @@ class Board:
         if move not in self.get_valid_moves():
             return False
 
-        row, col = self._get_blank_spot()
+        row, col = self.get_blank_spot()
 
         if move == "Up":
             self.current_state[row][col], self.current_state[row + 1][col] = (
@@ -96,14 +96,14 @@ class Board:
 
         return True
 
-    def get_valid_moves(self) -> Tuple[str]:
+    def get_valid_moves(self) -> Tuple[str, ...]:
         """Return the valid moves given the current state.
 
         Returns:
             A tuple containing the valid moves. This will contain two or more
             directions the board can shift in the form of strings.
         """
-        row, col = self._get_blank_spot()
+        row, col = self.get_blank_spot()
         moves = []
 
         if row != 3:
@@ -131,8 +131,11 @@ class Board:
                     return False
         return True
 
-    def _get_blank_spot(self) -> Tuple[int, int]:
+    def get_blank_spot(self) -> Tuple[int, int]:
         """Get the location of the blank space.
+
+        Throws:
+            ValueError if no blank space is found.
 
         Returns:
             Two-dimensional tuple containing the indices of the blank.
@@ -141,3 +144,4 @@ class Board:
             for j, elem in enumerate(row):
                 if elem == "_":
                     return (i, j)
+        raise ValueError("No blank space found in this Board.")
