@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "15-puzzle-solver"
-version = "0.1.0"
+version = "0.6"
 description = "Solves a 15-puzzle problem through uninformed and informed search algorithms"
 authors = ["TonyGrif <TonyGriffin2000@gmail.com>"]
 license = "MIT"
