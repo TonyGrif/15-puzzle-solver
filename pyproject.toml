@@ -5,7 +5,7 @@ description = "Solves a 15-puzzle problem through uninformed and informed search
 authors = ["TonyGrif <TonyGriffin2000@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "src"}]
+packages = [{include = "puzzle"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"

@@ -9,8 +9,8 @@ the given starting input.
 import argparse
 import logging
 
-from src.board import Board
-from src.utils import convert_string_to_list, validate_list
+from puzzle.board import Board
+from puzzle.utils import convert_string_to_list, validate_list
 
 
 def main():

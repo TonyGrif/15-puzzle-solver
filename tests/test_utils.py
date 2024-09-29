@@ -1,6 +1,6 @@
 import pytest
 
-from src.utils import convert_string_to_list, validate_list
+from puzzle.utils import convert_string_to_list, validate_list
 
 
 @pytest.fixture

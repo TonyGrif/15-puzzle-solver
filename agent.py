@@ -8,9 +8,9 @@ import time
 
 import psutil
 
-from src.board import Board
-from src.tree import Node, Tree
-from src.utils import convert_string_to_list, validate_list
+from puzzle.board import Board
+from puzzle.tree import Node, Tree
+from puzzle.utils import convert_string_to_list, validate_list
 
 
 def main():

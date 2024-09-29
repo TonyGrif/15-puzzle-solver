@@ -6,7 +6,7 @@ from copy import deepcopy
 from queue import LifoQueue, PriorityQueue, SimpleQueue
 from typing import Deque, List, Set, Tuple
 
-from src.board import GOAL_STATE, Board
+from puzzle.board import GOAL_STATE, Board
 
 
 class Node:

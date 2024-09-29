@@ -1,8 +1,8 @@
 import pytest
 
-from src.board import Board
-from src.tree import Node, Tree
-from src.utils import convert_string_to_list
+from puzzle.board import Board
+from puzzle.tree import Node, Tree
+from puzzle.utils import convert_string_to_list
 
 
 @pytest.fixture
