@@ -15,5 +15,3 @@ starting state is provided, the default state will be `"1 _ 2 4 5 7 3 8 9 6 11 1
 To run user-game, use `./play.py [starting state]` where the starting state must take the same form as the agent script.
 The user will be prompted for a move input that must be input with the same capitalization as the prompt, although the
 `''` are unneeded.
-
-## [Report](report/REPORT.md)
